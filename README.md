@@ -1,6 +1,6 @@
 # Hypeminer
 
-![Bitcoin](https://github.com/mommi84/hypeminer/raw/main/bitcoin.png "Bitcoin")
+![Bitcoin](https://github.com/mommi84/hypeminer/blob/main/img/bitcoin.png "Bitcoin")
 
 ## Links
 
