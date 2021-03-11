@@ -1,13 +1,18 @@
 #!/usr/bin/env python
+import configparser
 import json
 import time
 
 from newsapi import NewsApiClient
 
-# marco 4260e1a4caf84d308c6ca7de135c2c2b
-# tom 107d897c9a864cccb0d4020b8001ef5c
+# set owner
+owner = 'MARCO'
 
-newsapi = NewsApiClient(api_key='107d897c9a864cccb0d4020b8001ef5c')
+config = configparser.ConfigParser()
+config.read('config.ini')
+api_key = config[owner]['api_key']
+
+newsapi = NewsApiClient(api_key=api_key)
 published = '2021-03-08T23:59:59Z'
 
 for x in range(0, 100):

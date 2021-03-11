@@ -154,3 +154,7 @@ Icon
 data
 misc/
 notebooks
+
+#blah
+.idea/
+scripts/newsapi/news.json
