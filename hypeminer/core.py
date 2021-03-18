@@ -36,13 +36,14 @@ class Hypeminer(object):
 
     def pipeline(self, tweets, timestamp):
         # download currency value
-        currency_val = self.fetcher.fetch_value(self.currency)
+        currency_val = self.fetcher.fetch_value(self.currency, self.streamer.to_safe_timestamp(timestamp))
         print(currency_val)
 
         # predict sentiment
         preds = []
         for tweet in tweets:
-            pred = self.rob.predict(tweet['data']['text'], show=True)
+            text = tweet['data']['text'] if 'data' in tweet else tweet['text']
+            pred = self.rob.predict(text, show=True)
             print(pred)
             preds.append(pred)
 
@@ -64,6 +65,8 @@ class Hypeminer(object):
         # forecast values
         self.multivar.run(self.store_id, self.streamer.to_safe_timestamp(timestamp))
 
+        # TODO return forecast
+
 
     def single_run_from_stream(self, n_tweets):
         # download tweets
@@ -78,9 +81,13 @@ class Hypeminer(object):
         self.pipeline(tweets, timestamp)
 
 
-
-
 if __name__ == '__main__':
-    h = Hypeminer("test")
-    h.single_run_from_dump("20210318021353")
+    h = Hypeminer("store")
+
+    # h.single_run_from_dump("20210318021353")
+
     # h.single_run_from_stream(n_tweets=10)
+    
+    # for i, file_id in enumerate(h.streamer.list_file_ids()):
+    #     print(i, file_id)
+    #     h.single_run_from_dump(file_id)

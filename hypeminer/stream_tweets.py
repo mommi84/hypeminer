@@ -2,9 +2,11 @@
 import requests
 from datetime import datetime
 import json
+import os
 
 
-TWEETS_PATH = "data/{}/tweets/tweets-{}.json"
+TWEETS_DIR = "data/{}/tweets/"
+TWEETS_PATH = TWEETS_DIR + "tweets-{}.json"
 
 STREAMER_URL = "https://api.twitter.com/2/tweets/search/stream?tweet.fields=created_at&expansions=author_id&user.fields=created_at"
 
@@ -33,6 +35,13 @@ class TweetStreamer(object):
 
     def to_safe_timestamp(self, x):
         return x.replace('-', '').replace(' ', '').replace(':', '')
+
+    def list_file_ids(self):
+        file_ids = []
+        for file in os.listdir(TWEETS_DIR.format(self.currency)):
+            if file.endswith(".json"):
+                file_ids.append(file[7:-5])
+        return sorted(file_ids)
 
     def tweets_from_dump(self, safe_timestamp):
         tweets = []

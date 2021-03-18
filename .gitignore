@@ -157,6 +157,8 @@ misc/
 notebooks
 hypeminer/data
 hypeminer/cardiffnlp
+scripts/twitter/tweets
+scripts/twitter/tweets-out
 
 #blah
 .idea/

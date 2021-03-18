@@ -11,9 +11,11 @@ class MultivariateTSF(object):
 		self.forecast_days = forecast_days
 		self.target = target
 		self.regressors = regressors
-		self.m = Prophet(yearly_seasonality=yearly_seasonality)
+		self.yearly_seasonality = yearly_seasonality
 
 	def run(self, store_id, safe_timestamp):
+
+		self.m = Prophet(yearly_seasonality=self.yearly_seasonality)
 
 		df = pd.read_csv("data/{}/indices/{}.tsv".format(self.currency, store_id), sep='\t')
 
