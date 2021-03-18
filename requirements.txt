@@ -1,1 +1,4 @@
-newsapi-python == 0.2.6
+newsapi-python==0.2.6
+transformers==4.4.1
+numpy==1.19.3
+scipy==1.6.1

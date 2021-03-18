@@ -154,6 +154,8 @@ Icon
 data
 misc/
 notebooks
+hypeminer/*.json
+hypeminer/cardiffnlp
 
 #blah
 .idea/
