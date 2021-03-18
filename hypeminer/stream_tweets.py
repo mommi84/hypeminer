@@ -4,6 +4,8 @@ from datetime import datetime
 import json
 
 
+TWEETS_PATH = "data/{}/tweets/tweets-{}.json"
+
 STREAMER_URL = "https://api.twitter.com/2/tweets/search/stream?tweet.fields=created_at&expansions=author_id&user.fields=created_at"
 
 STREAMER_HEADERS = {
@@ -15,28 +17,36 @@ STREAMER_HEADERS = {
 class TweetStreamer(object):
 
     """TweetStreamer object."""
-    def __init__(self, url=STREAMER_URL, headers=STREAMER_HEADERS):
+    def __init__(self, currency, url=STREAMER_URL, headers=STREAMER_HEADERS):
+        self.currency = currency
         self.url = url
         self.headers = headers
 
     def get_now(self):
         now = datetime.now()
-        dt_now = now.strftime("%Y-%m-%dT%H:%M:%SZ")
+        dt_now = now.strftime("%Y-%m-%d %H:%M:%S")
         safe_dt_now = now.strftime("%Y%m%d%H%M%S")
         return dt_now, safe_dt_now
 
-    def tweets_from_dump(self, timestamp):
+    def to_timestamp(self, x):
+        return "{}-{}-{} {}:{}:{}".format(x[0:4], x[4:6], x[6:8], x[8:10], x[10:12], x[12:14])
+
+    def to_safe_timestamp(self, x):
+        return x.replace('-', '').replace(' ', '').replace(':', '')
+
+    def tweets_from_dump(self, safe_timestamp):
         tweets = []
-        my_infile = "tweets-{}.json".format(timestamp)
+        my_infile = TWEETS_PATH.format(self.currency, safe_timestamp)
+        timestamp = self.to_timestamp(safe_timestamp)
         with open(my_infile) as f:
             for line in f:
                 tweets.append(json.loads(line.strip()))
-        return tweets, my_infile
+        return tweets, timestamp, my_infile
 
     def stream_tweets(self, n_tweets=10):
 
-        _, safe_dt_now = self.get_now()
-        my_outfile = "tweets-{}.json".format(safe_dt_now)
+        timestamp, safe_timestamp = self.get_now()
+        my_outfile = TWEETS_PATH.format(self.currency, safe_timestamp)
 
         s = requests.Session()
 
@@ -51,11 +61,11 @@ class TweetStreamer(object):
                     if len(tweets) == n_tweets:
                         break
 
-        return tweets, my_outfile
+        return tweets, timestamp, my_outfile
 
 
 if __name__ == '__main__':
-    streamer = TweetStreamer()
+    streamer = TweetStreamer("BTCUSDT")
     # tweets, outfile = streamer.stream_tweets(n_tweets=10)
     tweets, outfile = streamer.tweets_from_dump("20210318021353")
     print("Tweets from file {}.".format(outfile))

@@ -151,10 +151,11 @@ Icon
 .com.apple.timemachine.donotpresent
 
 # local directories / symlinks
+*.zip
 data
 misc/
 notebooks
-hypeminer/*.json
+hypeminer/data
 hypeminer/cardiffnlp
 
 #blah
