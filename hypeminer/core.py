@@ -87,7 +87,9 @@ if __name__ == '__main__':
     # h.single_run_from_dump("20210318021353")
 
     # h.single_run_from_stream(n_tweets=10)
-    
-    # for i, file_id in enumerate(h.streamer.list_file_ids()):
-    #     print(i, file_id)
-    #     h.single_run_from_dump(file_id)
+
+    for i, file_id in enumerate(h.streamer.list_file_ids()):
+        print(i, file_id)
+        h.single_run_from_dump(file_id)
+        if i+1 == 10:
+            break

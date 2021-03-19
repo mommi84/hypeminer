@@ -19,11 +19,14 @@ class SentimentIndex(object):
             twsa[k] = x
         return twsa
 
-    def index_average(self, index_store):
-        df = pd.read_csv(index_store, sep='\t')
+    def index_average(self, sample_store):
+        df = pd.read_csv(sample_store, sep='\t')
         last_n = df.tail(self.mov_avg_window)
         avg = last_n.mean()
-        return {k: avg.loc[k] for k in list(avg.index)}
+        avg_object = {k: avg.loc[k] for k in list(avg.index)}
+        # 'currency' column should get the latest value!
+        avg_object['currency'] = last_n['currency'].iloc[-1]
+        return avg_object
 
     def sample_average(self, preds):
         sentiments = {'positive': 0.0, 'neutral': 0.0, 'negative': 0.0, 'score': 0.0}
