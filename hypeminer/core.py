@@ -10,18 +10,18 @@ INDICES_STORE = 'data/{}/indices/{}.tsv'
 class Hypeminer(object):
 
     """Hypeminer object."""
-    def __init__(self, store_id, currency='BTCUSDT', target='currency', regressors=['score', 'negative'], mov_avg_window=5, forecast_days=4):
+    def __init__(self, store_id, currency='BTCUSDT', target='currency', regressors=['score', 'negative'], mov_avg_window=5, forecast_hours=168):
         self.store_id = store_id
         self.currency = currency
         self.target = target
         self.regressors = regressors
         self.mov_avg_window = mov_avg_window
-        self.forecast_days = forecast_days
+        self.forecast_hours = forecast_hours
         self.streamer = TweetStreamer(currency)
         self.fetcher = CurrencyFetcher()
         self.rob = RobertaSentimentAnalysis()
         self.index = SentimentIndex(mov_avg_window=mov_avg_window)
-        self.multivar = MultivariateTSF(currency, forecast_days, target, regressors)
+        self.multivar = MultivariateTSF(currency, forecast_hours, target, regressors)
         self.prepare_stores()
 
     def prepare_stores(self):
@@ -89,7 +89,5 @@ if __name__ == '__main__':
     # h.single_run_from_stream(n_tweets=10)
 
     for i, file_id in enumerate(h.streamer.list_file_ids()):
-        print(i, file_id)
+        print("\n=============================", i, file_id, "=============================")
         h.single_run_from_dump(file_id)
-        if i+1 == 10:
-            break
