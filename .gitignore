@@ -152,14 +152,13 @@ Icon
 
 # local directories / symlinks
 *.zip
-data
-misc/
-notebooks
-hypeminer/data
-hypeminer/cardiffnlp
-scripts/twitter/tweets
-scripts/twitter/tweets-out
+./data
+./misc
+./notebooks
+cardiffnlp
+./scripts/twitter/tweets
+./scripts/twitter/tweets-out
 
 #blah
 .idea/
-scripts/newsapi/news.json
+./scripts/newsapi/news.json
