@@ -152,12 +152,11 @@ Icon
 
 # local directories / symlinks
 *.zip
-./data
-./misc
-./notebooks
+training-data
+misc
+notebooks
 cardiffnlp
-./scripts/twitter/tweets
-./scripts/twitter/tweets-out
+scripts/twitter/tweets
 
 #blah
 .idea/
