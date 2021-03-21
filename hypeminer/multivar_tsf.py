@@ -19,7 +19,7 @@ class MultivariateTSF(object):
 		self.regressors = regressors
 		self.yearly_seasonality = yearly_seasonality
 
-	def estimate_regressor(self, columns, r0, dfp):
+	def estimate_regressor(self, columns, r0, dfp, store_id, safe_timestamp):
 		to_drop = ['y']
 		for r in self.regressors:
 			if r != r0:
@@ -33,6 +33,8 @@ class MultivariateTSF(object):
 		forecast_r = model_r.predict(future_r)
 		values_r = list(dfp[columns[r0]])
 		values_r += list(forecast_r['yhat'].tail(self.forecast_hours))
+		fig_r = model_r.plot(forecast_r)
+		fig_r.savefig("data/{}/plots/{}-{}-{}.png".format(self.currency, store_id, r0, safe_timestamp))
 		return values_r
 
 	def run(self, store_id, safe_timestamp):
@@ -62,7 +64,7 @@ class MultivariateTSF(object):
 
 		future = model.make_future_dataframe(freq='H', periods=self.forecast_hours)
 		for r in self.regressors:
-			future[columns[r]] = self.estimate_regressor(columns, r, dfp)
+			future[columns[r]] = self.estimate_regressor(columns, r, dfp, store_id, safe_timestamp)
 
 		print(future)
 
@@ -71,10 +73,14 @@ class MultivariateTSF(object):
 		fig = model.plot(forecast)
 		fig.savefig("data/{}/plots/{}-{}.png".format(self.currency, store_id, safe_timestamp))
 
+		plt.clf()
+		plt.plot(forecast['ds'], forecast['trend'])
+		plt.savefig("data/{}/plots/{}-trend-{}.png".format(self.currency, store_id, safe_timestamp))
+
 
 if __name__ == '__main__':
 	currency = "BTCUSDT"
-	safe_timestamp = "20210309024000"
+	safe_timestamp = "20210318172600"
 	forecast_hours = 144
 	target = 'currency'
 	regressors = ['score', 'negative']
