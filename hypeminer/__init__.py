@@ -4,5 +4,6 @@ from hypeminer.fetch_currency import *
 from hypeminer.sentiment_analysis import *
 from hypeminer.sentiment_index import *
 from hypeminer.multivar_tsf import *
+import hypeminer.utilities as utilities
 
 from hypeminer.core import *
