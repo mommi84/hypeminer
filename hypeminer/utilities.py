@@ -4,7 +4,7 @@ import os
 import json
 
 
-def to_epoch(timestamp, is_safe=True, milliseconds=False):
+def to_datetime(timestamp, is_safe=True):
 	if is_safe:
 		y = int(timestamp[0:4])
 		mo = int(timestamp[4:6])
@@ -19,7 +19,12 @@ def to_epoch(timestamp, is_safe=True, milliseconds=False):
 		h = int(timestamp[11:13])
 		mi = int(timestamp[14:16])
 		s = int(timestamp[17:19])
-	epoch = datetime(y, mo, d, h, mi, s).timestamp()
+	return datetime(y, mo, d, h, mi, s)
+
+
+def to_epoch(timestamp, is_safe=True, milliseconds=False):
+	dt = to_datetime(timestamp, is_safe=is_safe)
+	epoch = dt.timestamp()
 	if milliseconds:
 		return int(epoch * 1000)
 	else:
@@ -60,3 +65,4 @@ class suppress_stdout_stderr(object):
 def save_to_json(filename, the_object):
 	with open(filename, 'w') as f_out:
 		f_out.write(json.dumps(the_object, indent=4))
+
