@@ -75,6 +75,7 @@ class MultivariateTSF(object):
             return
 
         last_datetime = utilities.to_datetime(df.tail(1)['timestamp'].iloc[0], is_safe=False)
+        print(last_datetime)
         past_datetimes = list(df['timestamp'])
 
         dfp = pd.DataFrame()
@@ -149,8 +150,8 @@ class MultivariateTSF(object):
 if __name__ == '__main__':
 
     currency = "BTCUSDT"
-    safe_timestamp = "20210317115500"
-    forecast_hours = 96
+    safe_timestamp = "20210308235900"
+    forecast_hours = 24*7
     target = 'currency'
     regressors = ['score', 'negative']
 

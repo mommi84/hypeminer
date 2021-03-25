@@ -23,7 +23,7 @@ def create_sklearn_dataset(currency, store_id, window, regressors, save_to_csv=F
 
 	data = df_final.tail(-window)
 
-	data.to_csv("data/{}/datasets/{}-window{}.tsv".format(currency, store_id, window), sep='\t', index=False)
+	data.to_csv("data/{}/datasets/{}-sklearn-window{}.tsv".format(currency, store_id, window), sep='\t', index=False)
 
 	return data
 
