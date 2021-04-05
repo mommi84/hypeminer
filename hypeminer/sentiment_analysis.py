@@ -1,12 +1,18 @@
 #!/usr/bin/env python
-from transformers import AutoModelForSequenceClassification
-from transformers import TFAutoModelForSequenceClassification
-from transformers import AutoTokenizer
+import os
 import numpy as np
-from scipy.special import softmax
 import csv
 import urllib.request
 import re
+
+# suppress tf and cuda messages
+os.environ['TF_CPP_MIN_LOG_LEVEL'] = '3'
+
+from transformers import AutoModelForSequenceClassification
+from transformers import TFAutoModelForSequenceClassification
+from transformers import AutoTokenizer
+
+from scipy.special import softmax
 
 
 # Tasks:
