@@ -32,4 +32,4 @@ if __name__ == '__main__':
 
 	limit = 36 # 4 days
 
-	compute_rmse("data/BTCUSDT/predictions/store-20210308235900.tsv", "data/BTCUSDT/datasets/store-indices.tsv", samples_limit=limit)
+	compute_rmse("data/BTCBUSD/predictions/store-20210308235900.tsv", "data/BTCBUSD/datasets/store-indices.tsv", samples_limit=limit)

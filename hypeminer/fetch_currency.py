@@ -22,5 +22,5 @@ class CurrencyFetcher(object):
 
 if __name__ == '__main__':
 	f = CurrencyFetcher()
-	result = f.fetch_value("BTCUSDT", "20210318021353")
+	result = f.fetch_value("BTCBUSD", "20210318021353")
 	print(result)

@@ -30,5 +30,5 @@ def create_sklearn_dataset(currency, store_id, window, regressors, save_to_csv=F
 
 
 if __name__ == '__main__':
-	data = create_sklearn_dataset('BTCUSDT', 'store', 5, ['score', 'negative'], save_to_csv=True)
+	data = create_sklearn_dataset('BTCBUSD', 'store', 5, ['score', 'negative'], save_to_csv=True)
 	print(data)

@@ -10,7 +10,7 @@ INDICES_STORE = 'data/{}/indices/{}.tsv'
 class Hypeminer(object):
 
     """Hypeminer object."""
-    def __init__(self, store_id, currency='BTCUSDT', target='currency', regressors=['score', 'negative'], mov_avg_window=5, forecast_hours=168):
+    def __init__(self, store_id, currency='BTCBUSD', target='currency', regressors=['score', 'negative'], mov_avg_window=5, forecast_hours=168):
         self.store_id = store_id
         self.currency = currency
         self.target = target

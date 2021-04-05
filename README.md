@@ -16,7 +16,7 @@ export PYTHONPATH=${PYTHONPATH}:`pwd`
 Bash:
 
 ```bash
-# process all tweets in files ./data/BTCUSDT/tweets/*.json
+# process all tweets in files ./data/BTCBUSD/tweets/*.json
 python3 core.py
 ```
 
@@ -25,9 +25,9 @@ Python:
 ```python
 from hypeminer import Hypeminer
 
-h = Hypeminer('store', currency='BTCUSDT')
+h = Hypeminer('store', currency='BTCBUSD')
 
-# process tweets in file ./data/BTCUSDT/tweets/20210318021353.json
+# process tweets in file ./data/BTCBUSD/tweets/20210318021353.json
 h.single_run_from_dump("20210318021353")
 
 # downloads and processes 10 tweets from Twitter streaming APIs (warning: it will consume API calls)

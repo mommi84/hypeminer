@@ -149,7 +149,7 @@ class MultivariateTSF(object):
 
 if __name__ == '__main__':
 
-    currency = "BTCUSDT"
+    currency = "BTCBUSD"
     safe_timestamp = "20210308235900"
     forecast_hours = 24*7
     target = 'currency'

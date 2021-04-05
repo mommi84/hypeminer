@@ -40,5 +40,5 @@ class SentimentIndex(object):
 
 if __name__ == '__main__':
     si = SentimentIndex()
-    avg = si.index_average("data/BTCUSDT/indices/20210318132039.tsv")
+    avg = si.index_average("data/BTCBUSD/indices/20210318132039.tsv")
     print(avg)
