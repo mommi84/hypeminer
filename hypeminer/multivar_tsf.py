@@ -4,13 +4,15 @@ from fbprophet import Prophet
 from matplotlib import pyplot as plt
 import datetime
 from math import ceil
+from cycler import cycler
 
-from hypeminer import utilities
+from hypeminer import utilities, CurrencyFetcher
 
 
 MIN_DATAPOINTS = 250
 SAMPLE_FREQUENCY = 9660 # 2h41m
 
+plt.style.use('ggplot')
 plt.rcParams["figure.figsize"] = (15, 4)
 
 
@@ -37,7 +39,7 @@ class MultivariateTSF(object):
         df_r['y'] = df_r[columns[r0]]
         df_r = df_r.drop(columns=columns[r0])
 
-        model_r = Prophet(yearly_seasonality=self.yearly_seasonality)
+        model_r = Prophet(yearly_seasonality=self.yearly_seasonality, weekly_seasonality=True, daily_seasonality=True)
         with utilities.suppress_stdout_stderr():
             model_r.fit(df_r)
 
@@ -64,18 +66,45 @@ class MultivariateTSF(object):
 
         return future
 
+    def plot_currency_comparison(self, df, df_predictions, x_axis, store_id, safe_timestamp):
+        plt.clf()
+        prop_cycle = plt.rcParams["axes.prop_cycle"]
+        plt.rcParams["axes.prop_cycle"] = cycler('color', ['#e24a33', '#e24a33', '#e24a33', '#0072b2'])
+        curr_values = pd.DataFrame()
+        curr_values['ds'] = x_axis
+        nothing = [None] * len(df['currency'])
+        curr_values['predicted'] = nothing + list(df_predictions['yhat'])
+        curr_values['predicted_u'] = nothing + list(df_predictions['yhat_upper'])
+        curr_values['predicted_l'] = nothing + list(df_predictions['yhat_lower'])
+        fetcher = CurrencyFetcher(self.currency)
+        ref_values = []
+        for ds in df_predictions['ds']:
+            try:
+                ref = fetcher.fetch_value(utilities.to_safe_timestamp(str(ds)))
+                ref_values.append(ref['value'])
+            except:
+                print(f"Could not fetch currency value for {str(ds)}.")
+        curr_values['reference'] = list(df['currency']) + ref_values
+        print(curr_values)
+        plt.plot(curr_values['ds'], curr_values['predicted'], label='Predicted')
+        plt.plot(curr_values['ds'], curr_values['predicted_u'], '--')
+        plt.plot(curr_values['ds'], curr_values['predicted_l'], '--')
+        plt.plot(curr_values['ds'], curr_values['reference'], label='Reference')
+        plt.savefig("data/{}/plots/{}-currency-{}.png".format(self.currency, store_id, safe_timestamp))
+        plt.rcParams["axes.prop_cycle"] = prop_cycle
+
     def run(self, store_id, safe_timestamp):
 
-        model = Prophet(yearly_seasonality=self.yearly_seasonality)
+        model = Prophet(yearly_seasonality=self.yearly_seasonality, weekly_seasonality=True, daily_seasonality=True)
 
         df = pd.read_csv("data/{}/indices/{}.tsv".format(self.currency, store_id), sep='\t')
 
         if len(df) < MIN_DATAPOINTS:
             print("Not enough datapoints for forecast. Skipping...")
-            return
+            return { "forecast": [] }
 
-        last_datetime = utilities.to_datetime(df.tail(1)['timestamp'].iloc[0], is_safe=False)
-        print(last_datetime)
+        last_datetime = utilities.to_datetime(df['timestamp'].iloc[-1], is_safe=False)
+        print("Last datetime:", last_datetime)
         past_datetimes = list(df['timestamp'])
 
         dfp = pd.DataFrame()
@@ -128,8 +157,11 @@ class MultivariateTSF(object):
             })
 
         for i in range(len(arr_forecast)):
-            old_price = forecast['yhat'].iloc[-self.forecast_samples-1] if i == 0 else arr_forecast[i-1]['price']
+            old_price = df['currency'].iloc[-1] if i == 0 else arr_forecast[i-1]['price']
             arr_forecast[i]['priceDelta'] = arr_forecast[i]['price'] - old_price
+
+        # plot currency reference vs predicted
+        self.plot_currency_comparison(df, df_predictions, forecast['ds'], store_id, safe_timestamp)
 
         with open("data/{}/predictions/{}-{}.tsv".format(self.currency, store_id, safe_timestamp), 'w') as f_out:
             
@@ -150,7 +182,7 @@ class MultivariateTSF(object):
 if __name__ == '__main__':
 
     currency = "BTCBUSD"
-    safe_timestamp = "20210308235900"
+    safe_timestamp = "20210318172600" # "20210308235900"
     forecast_hours = 24*7
     target = 'currency'
     regressors = ['score', 'negative']

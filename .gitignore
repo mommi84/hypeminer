@@ -161,3 +161,4 @@ scripts/twitter/tweets
 #blah
 .idea/
 ./scripts/newsapi/news.json
+cache.json

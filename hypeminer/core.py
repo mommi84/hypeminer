@@ -1,5 +1,6 @@
 #!/usr/bin/env python
-from hypeminer import TweetStreamer, CurrencyFetcher, RobertaSentimentAnalysis, SentimentIndex, MultivariateTSF
+from hypeminer import TweetStreamer, CurrencyFetcher, RobertaSentimentAnalysis, SentimentIndex, MultivariateTSF, utilities
+
 import os.path
 
 
@@ -18,13 +19,15 @@ class Hypeminer(object):
         self.mov_avg_window = mov_avg_window
         self.forecast_hours = forecast_hours
         self.streamer = TweetStreamer(currency)
-        self.fetcher = CurrencyFetcher()
+        self.fetcher = CurrencyFetcher(currency)
         self.rob = RobertaSentimentAnalysis()
         self.index = SentimentIndex(mov_avg_window=mov_avg_window)
         self.multivar = MultivariateTSF(currency, forecast_hours, target, regressors)
         self.prepare_stores()
 
     def prepare_stores(self):
+        for folder in ['datasets', 'indices', 'plots', 'predictions', 'samples', 'tweets', 'videos']:
+            utilities.mkdir(f"data/{self.currency}/{folder}")
         self.samples_store = SAMPLES_STORE.format(self.currency, self.store_id)
         self.indices_store = INDICES_STORE.format(self.currency, self.store_id)
 
@@ -36,7 +39,7 @@ class Hypeminer(object):
 
     def pipeline(self, tweets, timestamp):
         # download currency value
-        currency_val = self.fetcher.fetch_value(self.currency, self.streamer.to_safe_timestamp(timestamp))
+        currency_val = self.fetcher.fetch_value(utilities.to_safe_timestamp(timestamp))
         print(currency_val)
 
         # predict sentiment
@@ -63,7 +66,7 @@ class Hypeminer(object):
                     index_val["neutral"], index_val["negative"], index_val["score"]))
 
         # forecast values
-        self.multivar.run(self.store_id, self.streamer.to_safe_timestamp(timestamp))
+        self.multivar.run(self.store_id, utilities.to_safe_timestamp(timestamp))
 
         # TODO return forecast
 
@@ -82,7 +85,7 @@ class Hypeminer(object):
 
 
 if __name__ == '__main__':
-    h = Hypeminer("store")
+    h = Hypeminer("store", currency="BTCBUSD")
 
     h.single_run_from_dump("20210318172600")
 

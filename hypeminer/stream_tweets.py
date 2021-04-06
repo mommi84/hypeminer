@@ -4,6 +4,8 @@ from datetime import datetime
 import json
 import os
 
+from hypeminer import utilities
+
 
 TWEETS_DIR = "data/{}/tweets/"
 TWEETS_PATH = TWEETS_DIR + "tweets-{}.json"
@@ -30,12 +32,6 @@ class TweetStreamer(object):
         safe_dt_now = now.strftime("%Y%m%d%H%M%S")
         return dt_now, safe_dt_now
 
-    def to_timestamp(self, x):
-        return "{}-{}-{} {}:{}:{}".format(x[0:4], x[4:6], x[6:8], x[8:10], x[10:12], x[12:14])
-
-    def to_safe_timestamp(self, x):
-        return x.replace('-', '').replace(' ', '').replace(':', '')
-
     def list_file_ids(self):
         file_ids = []
         for file in os.listdir(TWEETS_DIR.format(self.currency)):
@@ -46,7 +42,7 @@ class TweetStreamer(object):
     def tweets_from_dump(self, safe_timestamp):
         tweets = []
         my_infile = TWEETS_PATH.format(self.currency, safe_timestamp)
-        timestamp = self.to_timestamp(safe_timestamp)
+        timestamp = utilities.to_timestamp(safe_timestamp)
         with open(my_infile) as f:
             for line in f:
                 tweets.append(json.loads(line.strip()))

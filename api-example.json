@@ -1,382 +1,382 @@
 {
     "forecast": [
         {
-            "predictedAt": 1615247940,
-            "predictedFor": 1615257600,
-            "price": 51126.937783060974,
-            "priceDelta": 103.61755536476994
+            "predictedAt": 1616088360,
+            "predictedFor": 1616098020,
+            "price": 57651.21887400088,
+            "priceDelta": -1758.2011259991195
         },
         {
-            "predictedAt": 1615247940,
-            "predictedFor": 1615267260,
-            "price": 50839.02669892433,
-            "priceDelta": -287.9110841366419
+            "predictedAt": 1616088360,
+            "predictedFor": 1616107680,
+            "price": 57905.3614776995,
+            "priceDelta": 254.14260369862313
         },
         {
-            "predictedAt": 1615247940,
-            "predictedFor": 1615276920,
-            "price": 50868.19438903972,
-            "priceDelta": 29.16769011539145
+            "predictedAt": 1616088360,
+            "predictedFor": 1616117340,
+            "price": 57940.22596707182,
+            "priceDelta": 34.86448937231762
         },
         {
-            "predictedAt": 1615247940,
-            "predictedFor": 1615286580,
-            "price": 50546.36017864701,
-            "priceDelta": -321.83421039271343
+            "predictedAt": 1616088360,
+            "predictedFor": 1616127000,
+            "price": 57773.04307062016,
+            "priceDelta": -167.18289645166078
         },
         {
-            "predictedAt": 1615247940,
-            "predictedFor": 1615296240,
-            "price": 50515.444887173915,
-            "priceDelta": -30.91529147309484
+            "predictedAt": 1616088360,
+            "predictedFor": 1616136660,
+            "price": 57698.78880250255,
+            "priceDelta": -74.25426811760553
         },
         {
-            "predictedAt": 1615247940,
-            "predictedFor": 1615305900,
-            "price": 50528.877980773716,
-            "priceDelta": 13.433093599800486
+            "predictedAt": 1616088360,
+            "predictedFor": 1616146320,
+            "price": 57791.225889350906,
+            "priceDelta": 92.43708684835292
         },
         {
-            "predictedAt": 1615247940,
-            "predictedFor": 1615315560,
-            "price": 50436.43120486831,
-            "priceDelta": -92.44677590540232
+            "predictedAt": 1616088360,
+            "predictedFor": 1616155980,
+            "price": 57788.511686424536,
+            "priceDelta": -2.71420292637049
         },
         {
-            "predictedAt": 1615247940,
-            "predictedFor": 1615325220,
-            "price": 50578.311703794,
-            "priceDelta": 141.8804989256896
+            "predictedAt": 1616088360,
+            "predictedFor": 1616165640,
+            "price": 58006.71595507986,
+            "priceDelta": 218.204268655325
         },
         {
-            "predictedAt": 1615247940,
-            "predictedFor": 1615334880,
-            "price": 50801.49267316429,
-            "priceDelta": 223.18096937028895
+            "predictedAt": 1616088360,
+            "predictedFor": 1616175300,
+            "price": 58136.040764184756,
+            "priceDelta": 129.3248091048954
         },
         {
-            "predictedAt": 1615247940,
-            "predictedFor": 1615344540,
-            "price": 50876.32748215737,
-            "priceDelta": 74.83480899308051
+            "predictedAt": 1616088360,
+            "predictedFor": 1616184960,
+            "price": 58253.04958287558,
+            "priceDelta": 117.00881869082514
         },
         {
-            "predictedAt": 1615247940,
-            "predictedFor": 1615354200,
-            "price": 50731.22937392814,
-            "priceDelta": -145.09810822923464
+            "predictedAt": 1616088360,
+            "predictedFor": 1616194620,
+            "price": 58411.085803182126,
+            "priceDelta": 158.03622030654515
         },
         {
-            "predictedAt": 1615247940,
-            "predictedFor": 1615363860,
-            "price": 51008.26759663642,
-            "priceDelta": 277.03822270828095
+            "predictedAt": 1616088360,
+            "predictedFor": 1616204280,
+            "price": 58438.33434821689,
+            "priceDelta": 27.24854503476672
         },
         {
-            "predictedAt": 1615247940,
-            "predictedFor": 1615373520,
-            "price": 50890.28367234589,
-            "priceDelta": -117.9839242905291
+            "predictedAt": 1616088360,
+            "predictedFor": 1616213940,
+            "price": 58355.78377029262,
+            "priceDelta": -82.55057792427397
         },
         {
-            "predictedAt": 1615247940,
-            "predictedFor": 1615383180,
-            "price": 51139.66193028314,
-            "priceDelta": 249.37825793724915
+            "predictedAt": 1616088360,
+            "predictedFor": 1616223600,
+            "price": 58442.711033864995,
+            "priceDelta": 86.92726357237552
         },
         {
-            "predictedAt": 1615247940,
-            "predictedFor": 1615392840,
-            "price": 51311.80262764102,
-            "priceDelta": 172.1406973578778
+            "predictedAt": 1616088360,
+            "predictedFor": 1616233260,
+            "price": 58582.9390781264,
+            "priceDelta": 140.22804426140647
         },
         {
-            "predictedAt": 1615247940,
-            "predictedFor": 1615402500,
-            "price": 51537.60569665611,
-            "priceDelta": 225.80306901509175
+            "predictedAt": 1616088360,
+            "predictedFor": 1616242920,
+            "price": 58712.68778995721,
+            "priceDelta": 129.7487118308054
         },
         {
-            "predictedAt": 1615247940,
-            "predictedFor": 1615412160,
-            "price": 51723.107424569556,
-            "priceDelta": 185.50172791344812
+            "predictedAt": 1616088360,
+            "predictedFor": 1616252580,
+            "price": 59020.406399354775,
+            "priceDelta": 307.7186093975688
         },
         {
-            "predictedAt": 1615247940,
-            "predictedFor": 1615421820,
-            "price": 51959.5680518725,
-            "priceDelta": 236.46062730294216
+            "predictedAt": 1616088360,
+            "predictedFor": 1616262240,
+            "price": 59159.4617681129,
+            "priceDelta": 139.05536875812686
         },
         {
-            "predictedAt": 1615247940,
-            "predictedFor": 1615431480,
-            "price": 51966.55358726943,
-            "priceDelta": 6.9855353969323914
+            "predictedAt": 1616088360,
+            "predictedFor": 1616271900,
+            "price": 59309.062814058336,
+            "priceDelta": 149.60104594543373
         },
         {
-            "predictedAt": 1615247940,
-            "predictedFor": 1615441140,
-            "price": 51763.816886627195,
-            "priceDelta": -202.73670064223552
+            "predictedAt": 1616088360,
+            "predictedFor": 1616281560,
+            "price": 59615.15449743059,
+            "priceDelta": 306.0916833722513
         },
         {
-            "predictedAt": 1615247940,
-            "predictedFor": 1615450800,
-            "price": 51906.75162211033,
-            "priceDelta": 142.9347354831334
+            "predictedAt": 1616088360,
+            "predictedFor": 1616291220,
+            "price": 59733.756697292316,
+            "priceDelta": 118.60219986172888
         },
         {
-            "predictedAt": 1615247940,
-            "predictedFor": 1615460460,
-            "price": 51597.346205335605,
-            "priceDelta": -309.40541677472356
+            "predictedAt": 1616088360,
+            "predictedFor": 1616300880,
+            "price": 59527.515416724105,
+            "priceDelta": -206.24128056821064
         },
         {
-            "predictedAt": 1615247940,
-            "predictedFor": 1615470120,
-            "price": 51666.382835978715,
-            "priceDelta": 69.03663064310967
+            "predictedAt": 1616088360,
+            "predictedFor": 1616310540,
+            "price": 59533.059815155175,
+            "priceDelta": 5.544398431069567
         },
         {
-            "predictedAt": 1615247940,
-            "predictedFor": 1615479780,
-            "price": 51531.11761601022,
-            "priceDelta": -135.26521996849624
+            "predictedAt": 1616088360,
+            "predictedFor": 1616320200,
+            "price": 59551.283071588914,
+            "priceDelta": 18.223256433739152
         },
         {
-            "predictedAt": 1615247940,
-            "predictedFor": 1615489440,
-            "price": 51517.717960031354,
-            "priceDelta": -13.399655978864757
+            "predictedAt": 1616088360,
+            "predictedFor": 1616329860,
+            "price": 59434.13778294164,
+            "priceDelta": -117.14528864727617
         },
         {
-            "predictedAt": 1615247940,
-            "predictedFor": 1615499100,
-            "price": 51492.45455867711,
-            "priceDelta": -25.26340135424107
+            "predictedAt": 1616088360,
+            "predictedFor": 1616339520,
+            "price": 59534.331568388465,
+            "priceDelta": 100.19378544682695
         },
         {
-            "predictedAt": 1615247940,
-            "predictedFor": 1615508760,
-            "price": 51657.05087653118,
-            "priceDelta": 164.59631785406964
+            "predictedAt": 1616088360,
+            "predictedFor": 1616349180,
+            "price": 59535.994295350465,
+            "priceDelta": 1.6627269620003062
         },
         {
-            "predictedAt": 1615247940,
-            "predictedFor": 1615518420,
-            "price": 51474.8200030206,
-            "priceDelta": -182.23087351058348
+            "predictedAt": 1616088360,
+            "predictedFor": 1616358840,
+            "price": 59384.86356911677,
+            "priceDelta": -151.13072623369226
         },
         {
-            "predictedAt": 1615247940,
-            "predictedFor": 1615528080,
-            "price": 51285.67906666357,
-            "priceDelta": -189.14093635702739
+            "predictedAt": 1616088360,
+            "predictedFor": 1616368500,
+            "price": 59351.53657819486,
+            "priceDelta": -33.32699092191615
         },
         {
-            "predictedAt": 1615247940,
-            "predictedFor": 1615537740,
-            "price": 51340.117788942865,
-            "priceDelta": 54.43872227929387
+            "predictedAt": 1616088360,
+            "predictedFor": 1616378160,
+            "price": 59154.27897737518,
+            "priceDelta": -197.25760081967746
         },
         {
-            "predictedAt": 1615247940,
-            "predictedFor": 1615547400,
-            "price": 51085.36330884579,
-            "priceDelta": -254.75448009707907
+            "predictedAt": 1616088360,
+            "predictedFor": 1616387820,
+            "price": 58730.51415463604,
+            "priceDelta": -423.7648227391401
         },
         {
-            "predictedAt": 1615247940,
-            "predictedFor": 1615557060,
-            "price": 51216.94703634394,
-            "priceDelta": 131.58372749815317
+            "predictedAt": 1616088360,
+            "predictedFor": 1616397480,
+            "price": 58645.15712033679,
+            "priceDelta": -85.35703429924615
         },
         {
-            "predictedAt": 1615247940,
-            "predictedFor": 1615566720,
-            "price": 51283.49084832725,
-            "priceDelta": 66.54381198331248
+            "predictedAt": 1616088360,
+            "predictedFor": 1616407140,
+            "price": 58476.569956193685,
+            "priceDelta": -168.58716414310766
         },
         {
-            "predictedAt": 1615247940,
-            "predictedFor": 1615576380,
-            "price": 51375.95263113853,
-            "priceDelta": 92.46178281127504
+            "predictedAt": 1616088360,
+            "predictedFor": 1616416800,
+            "price": 58408.41698795728,
+            "priceDelta": -68.15296823640529
         },
         {
-            "predictedAt": 1615247940,
-            "predictedFor": 1615586040,
-            "price": 51528.45868863262,
-            "priceDelta": 152.50605749409442
+            "predictedAt": 1616088360,
+            "predictedFor": 1616426460,
+            "price": 58425.52791907745,
+            "priceDelta": 17.11093112017261
         },
         {
-            "predictedAt": 1615247940,
-            "predictedFor": 1615595700,
-            "price": 51726.70380934605,
-            "priceDelta": 198.24512071342906
+            "predictedAt": 1616088360,
+            "predictedFor": 1616436120,
+            "price": 58382.821126283634,
+            "priceDelta": -42.70679279381875
         },
         {
-            "predictedAt": 1615247940,
-            "predictedFor": 1615605360,
-            "price": 51614.97738393782,
-            "priceDelta": -111.7264254082329
+            "predictedAt": 1616088360,
+            "predictedFor": 1616445780,
+            "price": 58360.920918554664,
+            "priceDelta": -21.90020772896969
         },
         {
-            "predictedAt": 1615247940,
-            "predictedFor": 1615615020,
-            "price": 51500.6121170706,
-            "priceDelta": -114.36526686721481
+            "predictedAt": 1616088360,
+            "predictedFor": 1616455440,
+            "price": 58540.99891750296,
+            "priceDelta": 180.07799894829805
         },
         {
-            "predictedAt": 1615247940,
-            "predictedFor": 1615624680,
-            "price": 51658.84907146238,
-            "priceDelta": 158.2369543917739
+            "predictedAt": 1616088360,
+            "predictedFor": 1616465100,
+            "price": 58439.142945263135,
+            "priceDelta": -101.85597223982768
         },
         {
-            "predictedAt": 1615247940,
-            "predictedFor": 1615634340,
-            "price": 51422.72041219647,
-            "priceDelta": -236.12865926590894
+            "predictedAt": 1616088360,
+            "predictedFor": 1616474760,
+            "price": 58234.7613789187,
+            "priceDelta": -204.38156634443294
         },
         {
-            "predictedAt": 1615247940,
-            "predictedFor": 1615644000,
-            "price": 51592.692371356505,
-            "priceDelta": 169.97195916003693
+            "predictedAt": 1616088360,
+            "predictedFor": 1616484420,
+            "price": 58165.31449986876,
+            "priceDelta": -69.44687904994498
         },
         {
-            "predictedAt": 1615247940,
-            "predictedFor": 1615653660,
-            "price": 51570.666377131034,
-            "priceDelta": -22.02599422547064
+            "predictedAt": 1616088360,
+            "predictedFor": 1616494080,
+            "price": 58184.20031357631,
+            "priceDelta": 18.88581370755128
         },
         {
-            "predictedAt": 1615247940,
-            "predictedFor": 1615663320,
-            "price": 51662.75403528845,
-            "priceDelta": 92.08765815741936
+            "predictedAt": 1616088360,
+            "predictedFor": 1616503740,
+            "price": 58196.82385957635,
+            "priceDelta": 12.623546000038914
         },
         {
-            "predictedAt": 1615247940,
-            "predictedFor": 1615672980,
-            "price": 51822.99530396551,
-            "priceDelta": 160.2412686770549
+            "predictedAt": 1616088360,
+            "predictedFor": 1616513400,
+            "price": 58384.72647039094,
+            "priceDelta": 187.90261081459175
         },
         {
-            "predictedAt": 1615247940,
-            "predictedFor": 1615682640,
-            "price": 52078.44517858108,
-            "priceDelta": 255.4498746155732
+            "predictedAt": 1616088360,
+            "predictedFor": 1616523060,
+            "price": 58463.641103038346,
+            "priceDelta": 78.91463264740742
         },
         {
-            "predictedAt": 1615247940,
-            "predictedFor": 1615692300,
-            "price": 52110.26959428471,
-            "priceDelta": 31.82441570363153
+            "predictedAt": 1616088360,
+            "predictedFor": 1616532720,
+            "price": 58524.85075977987,
+            "priceDelta": 61.20965674152103
         },
         {
-            "predictedAt": 1615247940,
-            "predictedFor": 1615701960,
-            "price": 52073.10699415807,
-            "priceDelta": -37.16260012664134
+            "predictedAt": 1616088360,
+            "predictedFor": 1616542380,
+            "price": 58659.55378491846,
+            "priceDelta": 134.70302513859497
         },
         {
-            "predictedAt": 1615247940,
-            "predictedFor": 1615711620,
-            "price": 52287.330699376405,
-            "priceDelta": 214.22370521833363
+            "predictedAt": 1616088360,
+            "predictedFor": 1616552040,
+            "price": 58638.08558688737,
+            "priceDelta": -21.46819803109247
         },
         {
-            "predictedAt": 1615247940,
-            "predictedFor": 1615721280,
-            "price": 52181.34135576692,
-            "priceDelta": -105.98934360948624
+            "predictedAt": 1616088360,
+            "predictedFor": 1616561700,
+            "price": 58471.778315236865,
+            "priceDelta": -166.30727165050484
         },
         {
-            "predictedAt": 1615247940,
-            "predictedFor": 1615730940,
-            "price": 52531.802781168604,
-            "priceDelta": 350.4614254016851
+            "predictedAt": 1616088360,
+            "predictedFor": 1616571360,
+            "price": 58638.655674696485,
+            "priceDelta": 166.8773594596205
         },
         {
-            "predictedAt": 1615247940,
-            "predictedFor": 1615740600,
-            "price": 52651.51449272625,
-            "priceDelta": 119.7117115576475
+            "predictedAt": 1616088360,
+            "predictedFor": 1616581020,
+            "price": 58692.20869472883,
+            "priceDelta": 53.553020032348286
         },
         {
-            "predictedAt": 1615247940,
-            "predictedFor": 1615750260,
-            "price": 52949.404031958344,
-            "priceDelta": 297.8895392320919
+            "predictedAt": 1616088360,
+            "predictedFor": 1616590680,
+            "price": 58770.6342750722,
+            "priceDelta": 78.4255803433698
         },
         {
-            "predictedAt": 1615247940,
-            "predictedFor": 1615759920,
-            "price": 53169.182588468924,
-            "priceDelta": 219.77855651058053
+            "predictedAt": 1616088360,
+            "predictedFor": 1616600340,
+            "price": 59012.98565424321,
+            "priceDelta": 242.35137917100656
         },
         {
-            "predictedAt": 1615247940,
-            "predictedFor": 1615769580,
-            "price": 53460.92397321912,
-            "priceDelta": 291.7413847501957
+            "predictedAt": 1616088360,
+            "predictedFor": 1616610000,
+            "price": 59102.70491509885,
+            "priceDelta": 89.71926085564337
         },
         {
-            "predictedAt": 1615247940,
-            "predictedFor": 1615779240,
-            "price": 53292.04046183347,
-            "priceDelta": -168.88351138564758
+            "predictedAt": 1616088360,
+            "predictedFor": 1616619660,
+            "price": 59215.49206064701,
+            "priceDelta": 112.78714554815815
         },
         {
-            "predictedAt": 1615247940,
-            "predictedFor": 1615788900,
-            "price": 53274.813613580074,
-            "priceDelta": -17.226848253398202
+            "predictedAt": 1616088360,
+            "predictedFor": 1616629320,
+            "price": 59444.90678564777,
+            "priceDelta": 229.41472500075906
         },
         {
-            "predictedAt": 1615247940,
-            "predictedFor": 1615798560,
-            "price": 53374.75880222552,
-            "priceDelta": 99.94518864544807
+            "predictedAt": 1616088360,
+            "predictedFor": 1616638980,
+            "price": 59442.2642857563,
+            "priceDelta": -2.6424998914735625
         },
         {
-            "predictedAt": 1615247940,
-            "predictedFor": 1615808220,
-            "price": 53041.50959710275,
-            "priceDelta": -333.2492051227746
+            "predictedAt": 1616088360,
+            "predictedFor": 1616648640,
+            "price": 59148.57253910911,
+            "priceDelta": -293.69174664718594
         },
         {
-            "predictedAt": 1615247940,
-            "predictedFor": 1615817880,
-            "price": 53155.32724803556,
-            "priceDelta": 113.81765093281138
+            "predictedAt": 1616088360,
+            "predictedFor": 1616658300,
+            "price": 59165.61850634168,
+            "priceDelta": 17.04596723256691
         },
         {
-            "predictedAt": 1615247940,
-            "predictedFor": 1615827540,
-            "price": 52988.838919329726,
-            "priceDelta": -166.48832870583283
+            "predictedAt": 1616088360,
+            "predictedFor": 1616667960,
+            "price": 59044.907252496894,
+            "priceDelta": -120.71125384478364
         },
         {
-            "predictedAt": 1615247940,
-            "predictedFor": 1615837200,
-            "price": 52888.74428197313,
-            "priceDelta": -100.09463735659665
+            "predictedAt": 1616088360,
+            "predictedFor": 1616677620,
+            "price": 59101.82625174349,
+            "priceDelta": 56.918999246598105
         },
         {
-            "predictedAt": 1615247940,
-            "predictedFor": 1615846860,
-            "price": 52871.97052770148,
-            "priceDelta": -16.773754271649523
+            "predictedAt": 1616088360,
+            "predictedFor": 1616687280,
+            "price": 59095.33298250561,
+            "priceDelta": -6.493269237878849
         },
         {
-            "predictedAt": 1615247940,
-            "predictedFor": 1615856520,
-            "price": 52930.08319682531,
-            "priceDelta": 58.11266912383144
+            "predictedAt": 1616088360,
+            "predictedFor": 1616696940,
+            "price": 59108.47563846854,
+            "priceDelta": 13.142655962925346
         }
     ]
 }

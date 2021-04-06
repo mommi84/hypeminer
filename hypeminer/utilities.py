@@ -1,5 +1,6 @@
 #!/usr/bin/env python
 from datetime import datetime
+from pathlib import Path
 import os
 import json
 
@@ -21,7 +22,6 @@ def to_datetime(timestamp, is_safe=True):
 		s = int(timestamp[17:19])
 	return datetime(y, mo, d, h, mi, s)
 
-
 def to_epoch(timestamp, is_safe=True, milliseconds=False):
 	dt = to_datetime(timestamp, is_safe=is_safe)
 	epoch = dt.timestamp()
@@ -29,6 +29,15 @@ def to_epoch(timestamp, is_safe=True, milliseconds=False):
 		return int(epoch * 1000)
 	else:
 		return int(epoch)
+
+def to_timestamp(x):
+    return "{}-{}-{} {}:{}:{}".format(x[0:4], x[4:6], x[6:8], x[8:10], x[10:12], x[12:14])
+
+def to_safe_timestamp(x):
+    return x.replace('-', '').replace(' ', '').replace(':', '')
+
+def mkdir(path):
+	Path(path).mkdir(parents=True, exist_ok=True)
 
 
 # from https://stackoverflow.com/questions/11130156/suppress-stdout-stderr-print-from-python-functions
