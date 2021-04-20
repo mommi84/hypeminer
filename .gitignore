@@ -154,7 +154,6 @@ Icon
 *.zip
 training-data
 misc
-notebooks
 cardiffnlp
 scripts/twitter/tweets
 
