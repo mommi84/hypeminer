@@ -161,3 +161,5 @@ scripts/twitter/tweets
 .idea/
 ./scripts/newsapi/news.json
 cache.json
+
+app/config.ini
