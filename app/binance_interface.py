@@ -32,7 +32,7 @@ class BinanceInterface(object):
 
 
     def get_all_orders(self):
-        return client.get_all_orders(symbol=self.symbol)
+        return self.client.get_all_orders(symbol=self.symbol)
 
 
     def free_balance(self, asset, fees=False):
@@ -67,3 +67,6 @@ class BinanceInterface(object):
         )
 
         return order
+
+    def get_ticket_price(self):
+        return self.client.get_symbol_ticker(symbol=f"{self.crypto}{self.fiat}")['price']

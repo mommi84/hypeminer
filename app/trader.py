@@ -32,16 +32,16 @@ class Trader(object):
 
             # TODO add ticker_price
 
-            if strategy == 'MACDDiffAdaptivePeakAndLimit':
-                results = {}
-                for i in range(0, 11):
-                    thr = i / 10
-                    assets, bnh = compute_macd_diff_peak_and_limit(df_orig, thr, FEES)
-                    print((thr, assets))
-                    results[thr] = assets
-                best_thr = sorted(results.items(), key=lambda x: x[1], reverse=True)[0][0]
-                print(f"Best threshold: {best_thr}")
-                compute_macd_diff_peaks(df_orig, best_thr, verbose=True, plot_chart=True)
+            # if strategy == 'MACDDiffAdaptivePeakAndLimit':
+            #     results = {}
+            #     for i in range(0, 11):
+            #         thr = i / 10
+            #         assets, bnh = compute_macd_diff_peak_and_limit(df_orig, thr, FEES)
+            #         print((thr, assets))
+            #         results[thr] = assets
+            #     best_thr = sorted(results.items(), key=lambda x: x[1], reverse=True)[0][0]
+            #     print(f"Best threshold: {best_thr}")
+            #     compute_macd_diff_peaks(df_orig, best_thr, verbose=True, plot_chart=True)
 
             # self.binance_i.buy_all_in(at_price=ticker_price)
 
