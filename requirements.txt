@@ -5,3 +5,5 @@ scipy==1.6.1
 pandas==1.2.3
 fbprophet==0.7.1
 flask==1.1.2
+python-binance==0.7.11
+pause==0.3
