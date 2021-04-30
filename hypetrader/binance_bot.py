@@ -32,7 +32,7 @@ class BinanceBot(object):
 
 
     def get_all_orders(self):
-        return client.get_all_orders(symbol=self.symbol)
+        return self.client.get_all_orders(symbol=self.symbol)
 
 
     def free_balance(self, asset, fees=False):
@@ -72,7 +72,6 @@ class BinanceBot(object):
         )
 
         return order
-
 
     def sell(self, at_price, perc=100):
 
