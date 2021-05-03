@@ -3,6 +3,7 @@ import math
 import pause
 from datetime import datetime, timedelta
 import pytz
+from pprint import pprint
 
 from hypetrader.binance_bot import BinanceBot
 from hypetrader.strategies import State, STRATEGY_PLANNING
@@ -13,13 +14,19 @@ from hypetrader.utilities import *
 class HypeTrader(object):
 
     """docstring for Trader"""
-    def __init__(self, crypto, fiat, strategy, freq=5):
+    def __init__(self, crypto, fiat, strategy, freq=5, percent=1):
         self.crypto = crypto
         self.fiat = fiat
         self.strategy = strategy
         self.freq = freq
+        self.percent = percent
         self.symbol = f"{crypto}{fiat}"
         self.bot = BinanceBot(crypto, fiat)
+
+
+    def _update(self, state, update_name):
+        fun = STRATEGY_PLANNING[self.strategy][update_name]
+        return fun(state)
 
 
     def run(self):
@@ -31,37 +38,45 @@ class HypeTrader(object):
 
         state.iteration = 0
 
+        order = None
+
         while True:
 
             state.current_epoch, state.open_price = self.bot.get_candle(self.freq)
             state.current_dt = datetime.fromtimestamp(state.current_epoch / 1000, pytz.utc).replace(tzinfo=None)
             state.current_dt_local = datetime.fromtimestamp(state.current_epoch / 1000)
 
+            # to run only once
+            if state.iteration == 0:
+                self._update(state, 'init')
+
             # to repeat every day
             if state.iteration % int(MINUTES_IN_A_DAY / self.freq) == 0:
-
-                daily_update = STRATEGY_PLANNING[self.strategy]['daily']
-                daily_update(state)
+                self._update(state, 'daily')
 
             # to repeat every hour
             if state.iteration % int(MINUTES_IN_AN_HOUR / self.freq) == 0:
-
-                hourly_update = STRATEGY_PLANNING[self.strategy]['hourly']
-                hourly_update(state)
+                self._update(state, 'hourly')
 
             # append ticker to df
             state.df_stg = state.df_stg.append({'ds': state.current_dt, 'open': state.open_price}, ignore_index=True)
 
             # to repeat every period
-            periodic_update = STRATEGY_PLANNING[self.strategy]['periodically']
-            decision = periodic_update(state)
+            decision = self._update(state, 'periodically')
 
-            print(f"Iteration {state.iteration}: {decision}")
+            print(f"Iteration: {state.iteration}")
+            print(f"Last optimisation: [ best_take_profit: {state.best_take_profit}, best_stop_loss: {state.best_stop_loss} ]")
+            print(f"Invested: {state.invested}")
+            print(f"Decision: {decision}")
 
             if decision == 'BUY':
-                order = self.bot.buy(at_price=state.open_price, perc=1)
+                order = self.bot.buy(at_price=state.open_price, perc=self.percent)
+                self._update(state, 'after_buying')
+
             elif decision == 'SELL':
-                order = self.bot.sell(at_price=state.open_price, perc=1)
+                order = self.bot.sell(at_price=state.open_price, perc=self.percent)
+                self._update(state, 'after_selling')
+
             else:
                 order = None
 
@@ -79,12 +94,15 @@ class HypeTrader(object):
 
             state.iteration += 1
 
+            with open('decision.log.txt', 'a') as f_out:
+                f_out.write(f"{state.current_dt_local}\t{state.open_price}\t{decision}\n")
+
 
 
 if __name__ == "__main__":
 
     crypto, fiat, strategy = 'BNB', 'BUSD', 'MACDDiffAdaptivePeakAndLimit'
 
-    trader = HypeTrader(crypto, fiat, strategy, freq=1)
+    trader = HypeTrader(crypto, fiat, strategy, freq=5, percent=1)
 
     trader.run()

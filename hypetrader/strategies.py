@@ -200,26 +200,28 @@ def optimise_parameters(state):
     state.best_take_profit, state.best_stop_loss, _, _, = heat.sort_values(by='stake', ascending=False).iloc[0]
     print(f"best_take_profit: {state.best_take_profit}, best_stop_loss: {state.best_stop_loss}")
 
+    # remove last row as it is added periodically
     state.df_stg = state.df_stg.iloc[:-1].copy()
 
 
-def call_macddpnl(state):
+def macddpnl_periodically(state):
     state.take_profit = state.best_take_profit
-    state.take_profit_bias = TAKE_PROFIT_BIAS # additional +0.7%
-    state.stop_loss = 0
+    state.stop_loss = state.best_stop_loss
+    state.take_profit_bias = TAKE_PROFIT_BIAS
 
+    # use best parameters and get suggestions based on MACD etc
     compute_macd_diff_peak_and_limit(state, simulate=False)
 
     suggest = state.df_stg['suggest'].iloc[-1]
     prev_suggest = state.df_stg['suggest'].iloc[-2]
-    open_price = state.df_stg['open'].iloc[-1]
-    limit = state.df_stg['limit'].iloc[-1]
 
     if not state.invested and suggest == 'BUY' and prev_suggest == 'IDLE':
         state.invested = True
+        state.current_limit = state.best_take_profit * state.open_price
+        state.current_stop = state.best_stop_loss * state.open_price
         return 'BUY'
 
-    if state.invested and open_price * (1 - FEES) > limit:
+    if state.invested and (state.open_price * (1 - FEES) > state.current_limit or state.open_price < state.current_stop):
         state.invested = False
         return 'SELL'
 
@@ -228,8 +230,11 @@ def call_macddpnl(state):
 
 STRATEGY_PLANNING = {
     'MACDDiffAdaptivePeakAndLimit': {
+        'init': optimise_parameters,
         'daily': do_nothing,
-        'hourly': optimise_parameters,
-        'periodically': call_macddpnl,
+        'hourly': do_nothing,
+        'periodically': macddpnl_periodically,
+        'after_buying': do_nothing,
+        'after_selling': optimise_parameters,
     }
 }

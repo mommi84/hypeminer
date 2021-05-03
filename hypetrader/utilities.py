@@ -1,15 +1,17 @@
 #!/usr/bin/env python
 import pandas as pd
 from datetime import datetime
+import pytz
+
 
 # values to change more often
 FEES = 0.0012
-OPT_WINDOW_DAYS = 7
-TAKE_PROFIT_BIAS = 0.003
+OPT_WINDOW_DAYS = 14
+TAKE_PROFIT_BIAS = 0 # (additional +0.7% works well with BNBBUSD)
 
 # values to change less often
-LIMIT_RANGE = [101, 101, 1]
-STOP_LOSS_RANGE = [90, 90, 2]
+LIMIT_RANGE = [101, 105, 1]
+STOP_LOSS_RANGE = [90, 99, 2]
 BINANCE_UPDATE_ALLOWANCE_SECONDS = 10
 
 # universal constants
@@ -35,9 +37,9 @@ to_interval = {
 }
 
 
-def to_epoch(timestamp, milliseconds=True):
+def to_epoch_utc(timestamp, milliseconds=True):
     dt = to_datetime(timestamp)
-    epoch = dt.timestamp()
+    epoch = dt.replace(tzinfo=pytz.utc).timestamp()
     if milliseconds:
         return int(epoch * 1000)
     else:
@@ -59,9 +61,9 @@ def json_to_df(obj):
     return pd.DataFrame.from_dict(d)
 
 
-def to_readable(epoch, millis=True):
+def to_readable_utc(epoch, millis=True):
     epoch = epoch / 1000 if millis else epoch
-    return datetime.fromtimestamp(epoch).strftime('%Y-%m-%d %H:%M:%S')
+    return datetime.fromtimestamp(epoch).replace(tzinfo=pytz.utc).strftime('%Y-%m-%d %H:%M:%S')
 
 
 def to_safe(timestamp):
