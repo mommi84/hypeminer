@@ -42,7 +42,8 @@ class HypeTrader(object):
 
         while True:
 
-            state.current_epoch, state.open_price = self.bot.get_candle(self.freq)
+            state.candle = self.bot.get_complete_candle(self.freq)
+            state.current_epoch, state.close_price = state.candle['epoch'], state.candle['close']
             state.current_dt = datetime.fromtimestamp(state.current_epoch / 1000, pytz.utc).replace(tzinfo=None)
             state.current_dt_local = datetime.fromtimestamp(state.current_epoch / 1000)
 
@@ -59,7 +60,15 @@ class HypeTrader(object):
                 self._update(state, 'hourly')
 
             # append ticker to df
-            state.df_stg = state.df_stg.append({'ds': state.current_dt, 'open': state.open_price}, ignore_index=True)
+            state.df_stg = state.df_stg.append({
+                'ds': to_datetime_utc(state.candle['epoch']),
+                'open': state.candle['open'],
+                'high': state.candle['high'],
+                'low': state.candle['low'],
+                'close': state.candle['close'],
+                'volume': state.candle['volume'],
+                'trades': state.candle['trades'],
+            }, ignore_index=True)
 
             # to repeat every period
             decision = self._update(state, 'periodically')
@@ -70,11 +79,11 @@ class HypeTrader(object):
             print(f"Decision: {decision}")
 
             if decision == 'BUY':
-                order = self.bot.buy(at_price=state.open_price, perc=self.percent)
+                order = self.bot.buy(at_price=state.close_price, perc=self.percent)
                 self._update(state, 'after_buying')
 
             elif decision == 'SELL':
-                order = self.bot.sell(at_price=state.open_price, perc=self.percent)
+                order = self.bot.sell(at_price=state.close_price, perc=self.percent)
                 self._update(state, 'after_selling')
 
             else:
@@ -84,7 +93,7 @@ class HypeTrader(object):
 
             state.df_stg.loc[state.df_stg.index[-1], 'decision'] = decision
 
-            print(state.df_stg[['ds', 'open', 'suggest', 'limit', 'decision']])
+            print(state.df_stg[STRATEGY_PLANNING[self.strategy]['output_cols']])
             state.df_stg.to_csv(f'trader_{self.symbol}.tsv', sep='\t')
 
             # sleep until next iteration
@@ -95,13 +104,13 @@ class HypeTrader(object):
             state.iteration += 1
 
             with open('decision.log.txt', 'a') as f_out:
-                f_out.write(f"{state.current_dt_local}\t{state.open_price}\t{decision}\n")
+                f_out.write(f"{state.current_dt_local}\t{state.close_price}\t{decision}\n")
 
 
 
 if __name__ == "__main__":
 
-    crypto, fiat, strategy = 'BNB', 'BUSD', 'MACDDiffAdaptivePeakAndLimit'
+    crypto, fiat, strategy = 'BNB', 'BUSD', 'StockPerceptron'
 
     trader = HypeTrader(crypto, fiat, strategy, freq=5, percent=1)
 

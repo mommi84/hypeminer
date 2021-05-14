@@ -47,9 +47,12 @@ class BinanceBot(object):
         return float(self.client.get_symbol_ticker(symbol=self.symbol)['price'])
 
 
-    def get_candle(self, freq):
-        candles = self.client.get_klines(symbol=self.symbol, interval=to_interval[freq], limit=1)
-        return candles[0][0], float(candles[0][1])
+    def get_complete_candle(self, freq):
+        candles = self.client.get_klines(symbol=self.symbol, interval=to_interval[freq], limit=2)
+        value = candles[0]
+        return {"epoch": value[0], "timestamp": to_readable_utc(value[0]), "open": float(value[1]), 
+                   "high": float(value[2]), "low": float(value[3]), "close": float(value[4]), 
+                   "volume": float(value[5]), "trades": value[8]}
 
 
     def buy(self, at_price, perc=100):

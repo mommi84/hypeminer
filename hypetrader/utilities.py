@@ -12,7 +12,7 @@ TAKE_PROFIT_BIAS = 0 # (additional +0.7% works well with BNBBUSD)
 # values to change less often
 LIMIT_RANGE = [101, 105, 1]
 STOP_LOSS_RANGE = [90, 99, 2]
-BINANCE_UPDATE_ALLOWANCE_SECONDS = 10
+BINANCE_UPDATE_ALLOWANCE_SECONDS = 5
 
 # universal constants
 MINUTES_IN_A_DAY = 24 * 60
@@ -48,9 +48,9 @@ def to_epoch_utc(timestamp, milliseconds=True):
 
 def get_value(v):
     try:
-        return float(v['value'])
+        return float(v['open'])
     except:
-        return float(v['value'][0][1])
+        return float(v['open'][0][1])
 
 
 def json_to_df(obj):
@@ -85,3 +85,5 @@ def to_safe_string(epoch, millis=True):
     epoch = epoch / 1000 if millis else epoch
     return datetime.fromtimestamp(epoch).strftime('%Y%m%d%H%M%S')
 
+def to_datetime_utc(epoch):
+	return datetime.fromtimestamp(epoch / 1000, pytz.utc).replace(tzinfo=None)

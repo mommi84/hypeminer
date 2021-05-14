@@ -26,7 +26,10 @@ def download_history_fast(symbol, start, freq=60, days=90):
     while not completed:
         values_batch = fetch(symbol, epoch, interval=interval, limit=1000)
         for value in values_batch:
-            obj = {"index": len(values), "epoch": value[0], "timestamp": to_readable_utc(value[0]), "value": value[1]}
+            # obj = {"index": len(values), "epoch": value[0], "timestamp": to_readable_utc(value[0]), "value": value[1]}
+            obj = {"index": len(values), "epoch": value[0], "timestamp": to_readable_utc(value[0]), "open": float(value[1]), 
+                   "high": float(value[2]), "low": float(value[3]), "close": float(value[4]), "volume": float(value[5]), 
+                   "trades": value[8]}
             values.append(obj)
             if value[0] >= epoch_at_start + millis_in_period:
                 completed = True
@@ -34,8 +37,13 @@ def download_history_fast(symbol, start, freq=60, days=90):
         print(f"Fetched {len(values)} values at {to_readable_utc(epoch)}...")
         epoch = values[-1]["epoch"] + freq * 60000
     df = pd.DataFrame()
-    df['ds'] = [datetime.fromtimestamp(v['epoch'] / 1000, pytz.utc).replace(tzinfo=None) for v in values]
-    df['open'] = [get_value(v) for v in values]
+    df['ds'] = [to_datetime_utc(v['epoch']) for v in values]
+    df['open'] = [v['open'] for v in values]
+    df['high'] = [v['high'] for v in values]
+    df['low'] = [v['low'] for v in values]
+    df['close'] = [v['close'] for v in values]
+    df['volume'] = [v['volume'] for v in values]
+    df['trades'] = [v['trades'] for v in values]    
     return df
 
 
