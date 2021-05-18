@@ -61,7 +61,7 @@ class BinanceBot(object):
         print(f"{self.fiat} available: {available_balance}")
 
         balance_to_invest = available_balance * perc / 100
-        print(f"{self.fiat} to invest: {balance_to_invest}")
+        print(f"{self.fiat} to trade: {balance_to_invest}")
 
         print(f"{self.crypto} price in {self.fiat}: {at_price}")
 
@@ -82,12 +82,12 @@ class BinanceBot(object):
         print(f"{self.crypto} available: {available_balance}")
 
         balance_to_sell = available_balance * perc / 100
-        print(f"{self.crypto} to sell: {balance_to_sell}")
+        print(f"{self.crypto} to trade: {balance_to_sell}")
 
         print(f"{self.crypto} price in {self.fiat}: {at_price}")
 
         precision = int(round(- math.log(self.step_size, 10), 0))
-        qty = round(balance_to_sell / at_price, precision)
+        qty = round(balance_to_sell * (1 - FEES), precision)
         print(f"{self.crypto} to sell: {qty}")
 
         order = self.client.order_market_sell(

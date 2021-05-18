@@ -12,7 +12,7 @@ TAKE_PROFIT_BIAS = 0 # (additional +0.7% works well with BNBBUSD)
 # values to change less often
 LIMIT_RANGE = [101, 105, 1]
 STOP_LOSS_RANGE = [90, 99, 2]
-BINANCE_UPDATE_ALLOWANCE_SECONDS = 5
+BINANCE_UPDATE_ALLOWANCE_SECONDS = 20
 
 # universal constants
 MINUTES_IN_A_DAY = 24 * 60

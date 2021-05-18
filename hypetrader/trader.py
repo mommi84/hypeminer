@@ -4,6 +4,7 @@ import pause
 from datetime import datetime, timedelta
 import pytz
 from pprint import pprint
+import sys
 
 from hypetrader.binance_bot import BinanceBot
 from hypetrader.strategies import State, STRATEGY_PLANNING
@@ -14,12 +15,13 @@ from hypetrader.utilities import *
 class HypeTrader(object):
 
     """docstring for Trader"""
-    def __init__(self, crypto, fiat, strategy, freq=5, percent=1):
+    def __init__(self, crypto, fiat, strategy, freq=5, percent=1, invested=False):
         self.crypto = crypto
         self.fiat = fiat
         self.strategy = strategy
         self.freq = freq
         self.percent = percent
+        self.invested = invested
         self.symbol = f"{crypto}{fiat}"
         self.bot = BinanceBot(crypto, fiat)
 
@@ -34,7 +36,7 @@ class HypeTrader(object):
         state = State()
         state.symbol = self.symbol
         state.freq = self.freq
-        state.invested = False
+        state.invested = self.invested
 
         state.iteration = 0
 
@@ -74,17 +76,29 @@ class HypeTrader(object):
             decision = self._update(state, 'periodically')
 
             print(f"Iteration: {state.iteration}")
-            print(f"Last optimisation: [ best_take_profit: {state.best_take_profit}, best_stop_loss: {state.best_stop_loss} ]")
+            print(f"Symbol: {state.symbol}")
+            if state.best_take_profit or state.best_stop_loss:
+                print(f"Last optimisation: [ best_take_profit: {state.best_take_profit}, best_stop_loss: {state.best_stop_loss} ]")
             print(f"Invested: {state.invested}")
             print(f"Decision: {decision}")
 
             if decision == 'BUY':
-                order = self.bot.buy(at_price=state.close_price, perc=self.percent)
-                self._update(state, 'after_buying')
+                try:
+                    order = self.bot.buy(at_price=state.close_price, perc=self.percent)
+                    self._update(state, 'after_buying')
+                except:
+                    order = None
+                    print("Order not fulfilled.")
+                    state.invested = False
 
             elif decision == 'SELL':
-                order = self.bot.sell(at_price=state.close_price, perc=self.percent)
-                self._update(state, 'after_selling')
+                try:
+                    order = self.bot.sell(at_price=state.close_price, perc=100)
+                    self._update(state, 'after_selling')
+                except:
+                    order = None
+                    print("Order not fulfilled.")
+                    state.invested = True
 
             else:
                 order = None
@@ -97,8 +111,9 @@ class HypeTrader(object):
             state.df_stg.to_csv(f'trader_{self.symbol}.tsv', sep='\t')
 
             # sleep until next iteration
-            dt = state.current_dt_local + timedelta(minutes=self.freq) + timedelta(seconds=BINANCE_UPDATE_ALLOWANCE_SECONDS)
+            dt = state.current_dt_local + 2 * timedelta(minutes=self.freq) + timedelta(seconds=BINANCE_UPDATE_ALLOWANCE_SECONDS)
             print(f"Waiting until {dt.strftime('%Y-%m-%d %H:%M:%S')} local time...")
+            sys.stdout.flush()
             pause.until(dt)
 
             state.iteration += 1
@@ -110,8 +125,6 @@ class HypeTrader(object):
 
 if __name__ == "__main__":
 
-    crypto, fiat, strategy = 'BNB', 'BUSD', 'StockPerceptron'
-
-    trader = HypeTrader(crypto, fiat, strategy, freq=5, percent=1)
+    trader = HypeTrader(crypto='BNB', fiat='BUSD', strategy='MACDHistoPeaks', freq=5, percent=1, invested=False)
 
     trader.run()

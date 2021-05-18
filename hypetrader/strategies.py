@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 from hypetrader import macddiffpnl
 from hypetrader import stockperceptron
+from hypetrader import macdhistopeaks
 
 
 def do_nothing(state):
@@ -30,6 +31,15 @@ STRATEGY_PLANNING = {
         'periodically': stockperceptron.act,
         'after_buying': do_nothing,
         'after_selling': do_nothing,
-        'output_cols': ['ds', 'open'],
+        'output_cols': ['ds', 'close'],
     },
+    'MACDHistoPeaks': {
+        'init': macdhistopeaks.initialise,
+        'daily': do_nothing,
+        'hourly': do_nothing,
+        'periodically': macdhistopeaks.act,
+        'after_buying': do_nothing,
+        'after_selling': do_nothing,
+        'output_cols': ['ds', 'close', 'macd_histo_norm', 'decision'],
+    }
 }
