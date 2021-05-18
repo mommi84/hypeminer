@@ -4,7 +4,13 @@ import json
 import matplotlib
 matplotlib.use('Agg')
 from hypecommons import *
+import sys
 
+CRYPTO = sys.argv[1]
+FIAT = sys.argv[2]
+MACD_INF = int(sys.argv[3])
+MACD_SUP = int(sys.argv[4])
+TRADER_START = sys.argv[5]
 
 def get_js_clock():
     return '''
@@ -46,35 +52,32 @@ def get_js_clock():
      '''
 
 def load_data(crypto, fiat):
-    df = pd.read_csv(f"../../hypetrader/trader_{crypto}{fiat}.tsv", parse_dates=['ds'], sep='\t')
+    df = pd.read_csv(f"../hypetrader/trader_{crypto}{fiat}.tsv", parse_dates=['ds'], sep='\t')
     df.set_index('ds', inplace=True)
     df['action'] = df['decision']
     return df
 
-def get_orders():
-    df = load_data(crypto='LTC', fiat='BUSD')
+def get_orders(crypto, fiat):
+    df = load_data(crypto, fiat)
     return df[(df['action'] == 'BUY') | (df['action'] == 'SELL')][['close', 'macd_histo_norm', 'action']].to_html().replace('<table border="1" class="dataframe">', '<table class="table">')
 
-def update_charts():
+def update_charts(crypto, fiat):
     # TODO: load parameters from trader (add columns)
-    crypto = 'LTC'
-    fiat = 'BUSD'
-    macd_thr = [-70, 20]
-    trader_start = datetime(2021, 5, 17, 20, 35, 0) # UTC time
+    macd_thr = [MACD_INF, MACD_SUP]
+    trader_start = datetime.strptime(TRADER_START, '%Y%m%d%H%M%S') # UTC time
     
     df = load_data(crypto, fiat)
     close_trader_start = df[df.index == trader_start]['close']
     df_chart = df.iloc[-100:].copy()
-    output_chart(df_chart, 'LTCBUSD', 5, save='static/price_chart.png', fig_size=(15,6), show=True, start_data=(trader_start, close_trader_start))
+    output_chart(df_chart, f"{crypto}{fiat}", 5, save='static/price_chart.png', fig_size=(15,6), show=True, start_data=(trader_start, close_trader_start))
     plot(plt.bar, df_chart, ['macd_histo_norm'], ['g'], bar_size=.2/len(df_chart), baseline=macd_thr, 
          baseline_names=['buy signal', 'sell signal'], fig_size=(15,3), show=True)
     plt.savefig('static/macd_histo.png')
     
     return "Done."
 
-def render():
+def render(crypto, fiat):
 #     # TODO: load parameters from trader (add columns)
-    crypto = 'LTC'
     
     return f"""<!DOCTYPE html>
         <head>
@@ -108,17 +111,17 @@ app = Flask(__name__, static_url_path='/static')
 @app.route('/charts')
 def charts():
     """Update charts."""
-    return update_charts()
+    return update_charts(CRYPTO, FIAT)
 
 @app.route('/orders')
 def orders():
     """Show orders."""
-    return get_orders()
+    return get_orders(CRYPTO, FIAT)
 
 @app.route('/')
 def root():
     """Show trader."""
-    return render()
+    return render(CRYPTO, FIAT)
 
 if __name__ == '__main__':
         app.run(host='0.0.0.0', port=8080, debug=True)
