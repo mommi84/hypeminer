@@ -39,7 +39,7 @@ STRATEGY_PLANNING = {
         'hourly': do_nothing,
         'periodically': macdhistopeaks.act,
         'after_buying': do_nothing,
-        'after_selling': do_nothing,
-        'output_cols': ['ds', 'close', 'macd_histo_norm', 'decision'],
+        'after_selling': macdhistopeaks.optimise,
+        'output_cols': ['ds', 'close', 'macd_histo_norm', 'macd_thr_a', 'macd_thr_b', 'decision'],
     }
 }

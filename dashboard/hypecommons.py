@@ -57,19 +57,22 @@ def to_epoch(timestamp, milliseconds=True):
 def to_readable(epoch):
     return datetime.fromtimestamp(epoch/1000).strftime('%Y-%m-%d %H:%M:%S')
 
-def plot(plt_fun, df_plot, cols, colours, title=None, bar_size=None, baseline=None, baseline_names=None, is_date=True,
-        fig_size=(20, 8), show=True):
+def plot(plt_fun, df_plot, cols, colours=None, linestyles=None, title=None, bar_size=None, baseline=None, baseline_names=None, is_date=True,
+        fig_size=(20, 8), clf=True, show=True):
     plt.rcParams["figure.figsize"] = fig_size
-    if show:
+    if clf:
         plt.clf()
     if is_date:
         plt.gca().xaxis.set_major_formatter(mdates.DateFormatter('%Y-%m-%d\n%H:%M'))
-    assert len(cols) == len(colours)
-    for col, clr in zip(cols, colours):
+    if not colours:
+        colours = len(cols) * [None]
+    if not linestyles:
+        linestyles = len(cols) * [None]
+    for col, clr, lst in zip(cols, colours, linestyles):
         if bar_size:
             plt_fun(df_plot.index, df_plot[col], color=clr, label=col, width=bar_size)
         else:
-            plt_fun(df_plot.index, df_plot[col], color=clr, label=col)
+            plt_fun(df_plot.index, df_plot[col], color=clr, label=col, linestyle=lst)
     if baseline:
         try:
             for bl, bln in zip(baseline, baseline_names):

@@ -4,7 +4,7 @@ import json
 import os
 import pandas as pd
 
-from utilities import *
+from hypetrader.utilities import *
 
 
 BINANCE_URL = "https://api.binance.com/api/v3/klines?symbol={}&interval={}&limit={}&startTime={}"
@@ -14,8 +14,24 @@ def fetch(symbol, epoch, interval="1m", limit=1):
     response = requests.request("GET", BINANCE_URL.format(symbol, interval, limit, epoch))
     result = json.loads(response.text)
     return result
+
+def load_file(file, init_index=False):
+    with open(file) as f:
+        data = json.load(f)
+    if init_index:
+        index = [to_datetime_utc(v['epoch']) for v in data]
+        df = pd.DataFrame(index=index)
+    else:
+        df = pd.DataFrame()
+        df['ds'] = [to_datetime_utc(v['epoch']) for v in data]
+    for field in ['open', 'high', 'low', 'close', 'volume', 'trades']:
+        df[field] = [v[field] for v in data]
+    return df
     
-def download_history_fast(symbol, start, freq=60, days=90):
+def download_history_fast(symbol, start, freq=60, days=90, init_index=False):
+    file_dest = f"data/optimisation/{symbol}-{start}-{freq}-{days}.json"
+    if os.path.isfile(file_dest):
+        return load_file(file_dest)
     millis_in_period = days * 24 * 60 * 60 * 1000
     epoch = to_epoch_utc(start)
     epoch_at_start = epoch
@@ -36,15 +52,10 @@ def download_history_fast(symbol, start, freq=60, days=90):
                 break
         print(f"Fetched {len(values)} values at {to_readable_utc(epoch)}...")
         epoch = values[-1]["epoch"] + freq * 60000
-    df = pd.DataFrame()
-    df['ds'] = [to_datetime_utc(v['epoch']) for v in values]
-    df['open'] = [v['open'] for v in values]
-    df['high'] = [v['high'] for v in values]
-    df['low'] = [v['low'] for v in values]
-    df['close'] = [v['close'] for v in values]
-    df['volume'] = [v['volume'] for v in values]
-    df['trades'] = [v['trades'] for v in values]    
-    return df
+    with open(file_dest, 'w') as f_out:
+        json.dump(values, f_out)
+    
+    return load_file(file_dest, init_index=init_index)
 
 
 if __name__ == '__main__':

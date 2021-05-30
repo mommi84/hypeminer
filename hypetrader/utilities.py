@@ -87,3 +87,7 @@ def to_safe_string(epoch, millis=True):
 
 def to_datetime_utc(epoch):
 	return datetime.fromtimestamp(epoch / 1000, pytz.utc).replace(tzinfo=None)
+
+def print_whole(dframe):
+    with pd.option_context('display.max_rows', None, 'display.max_columns', None):
+        print(dframe)

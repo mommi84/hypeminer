@@ -5,6 +5,7 @@ from datetime import datetime, timedelta
 import pytz
 from pprint import pprint
 import sys
+from tabulate import tabulate
 
 from hypetrader.binance_bot import BinanceBot
 from hypetrader.strategies import State, STRATEGY_PLANNING
@@ -53,12 +54,12 @@ class HypeTrader(object):
             if state.iteration == 0:
                 self._update(state, 'init')
 
-            # to repeat every day
-            if state.iteration % int(MINUTES_IN_A_DAY / self.freq) == 0:
+            # to repeat every day (except at start)
+            elif state.iteration % int(MINUTES_IN_A_DAY / self.freq) == 0:
                 self._update(state, 'daily')
 
-            # to repeat every hour
-            if state.iteration % int(MINUTES_IN_AN_HOUR / self.freq) == 0:
+            # to repeat every hour (except at start of day)
+            elif state.iteration % int(MINUTES_IN_AN_HOUR / self.freq) == 0:
                 self._update(state, 'hourly')
 
             # append ticker to df
@@ -70,6 +71,8 @@ class HypeTrader(object):
                 'close': state.candle['close'],
                 'volume': state.candle['volume'],
                 'trades': state.candle['trades'],
+                'macd_thr_a': state.macd_thr[0],
+                'macd_thr_b': state.macd_thr[1],
             }, ignore_index=True)
 
             # to repeat every period
@@ -84,7 +87,7 @@ class HypeTrader(object):
 
             if decision == 'BUY':
                 try:
-                    order = self.bot.buy(at_price=state.close_price, perc=self.percent)
+                    # order = self.bot.buy(at_price=state.close_price, perc=self.percent)
                     self._update(state, 'after_buying')
                 except:
                     order = None
@@ -93,7 +96,7 @@ class HypeTrader(object):
 
             elif decision == 'SELL':
                 try:
-                    order = self.bot.sell(at_price=state.close_price, perc=100)
+                    # order = self.bot.sell(at_price=state.close_price, perc=100)
                     self._update(state, 'after_selling')
                 except:
                     order = None
@@ -107,7 +110,8 @@ class HypeTrader(object):
 
             state.df_stg.loc[state.df_stg.index[-1], 'decision'] = decision
 
-            print(state.df_stg[STRATEGY_PLANNING[self.strategy]['output_cols']])
+            df_disp = state.df_stg[STRATEGY_PLANNING[self.strategy]['output_cols']].iloc[-10:]
+            print(tabulate(df_disp, headers = 'keys', tablefmt = 'psql'))
             state.df_stg.to_csv(f'trader_{self.symbol}.tsv', sep='\t')
 
             # sleep until next iteration
@@ -118,13 +122,10 @@ class HypeTrader(object):
 
             state.iteration += 1
 
-            with open('decision.log.txt', 'a') as f_out:
-                f_out.write(f"{state.current_dt_local}\t{state.close_price}\t{decision}\n")
-
 
 
 if __name__ == "__main__":
 
-    trader = HypeTrader(crypto='BNB', fiat='BUSD', strategy='MACDHistoPeaks', freq=5, percent=1, invested=False)
+    trader = HypeTrader(crypto='BNB', fiat='BUSD', strategy='MACDHistoPeaks', freq=1, percent=1, invested=False)
 
     trader.run()

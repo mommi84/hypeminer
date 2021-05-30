@@ -8,9 +8,9 @@ import sys
 
 CRYPTO = sys.argv[1]
 FIAT = sys.argv[2]
-MACD_INF = int(sys.argv[3])
-MACD_SUP = int(sys.argv[4])
-TRADER_START = sys.argv[5]
+# MACD_INF = int(sys.argv[3])
+# MACD_SUP = int(sys.argv[4])
+# TRADER_START = sys.argv[5]
 
 def get_js_clock():
     return '''
@@ -62,16 +62,20 @@ def get_orders(crypto, fiat):
     return df[(df['action'] == 'BUY') | (df['action'] == 'SELL')][['close', 'macd_histo_norm', 'action']].to_html().replace('<table border="1" class="dataframe">', '<table class="table">')
 
 def update_charts(crypto, fiat):
-    # TODO: load parameters from trader (add columns)
-    macd_thr = [MACD_INF, MACD_SUP]
-    trader_start = datetime.strptime(TRADER_START, '%Y%m%d%H%M%S') # UTC time
-    
+    # load parameters from trader
     df = load_data(crypto, fiat)
+    trader_start = df[['decision']].dropna().index[0] # UTC time
+    freq = int((df.index[-1] - df.index[-2]).total_seconds() / 60.0)
+    macd_thr = [df['macd_thr_a'].iloc[-1], df['macd_thr_b'].iloc[-1]]
     close_trader_start = df[df.index == trader_start]['close']
     df_chart = df.iloc[-100:].copy()
-    output_chart(df_chart, f"{crypto}{fiat}", 5, save='static/price_chart.png', fig_size=(15,6), show=True, start_data=(trader_start, close_trader_start))
-    plot(plt.bar, df_chart, ['macd_histo_norm'], ['g'], bar_size=.2/len(df_chart), baseline=macd_thr, 
-         baseline_names=['buy signal', 'sell signal'], fig_size=(15,3), show=True)
+    print((trader_start, close_trader_start))
+    output_chart(df_chart, f"{crypto}{fiat}", freq, save='static/price_chart.png', fig_size=(15,6), show=True, start_data=(trader_start, close_trader_start))
+    plt.clf()
+    df_chart['buy_signal'] = df_chart['macd_thr_a']
+    df_chart['sell_signal'] = df_chart['macd_thr_b']
+    plot(plt.plot, df_chart, ['buy_signal', 'sell_signal'], colours=['b', 'b'], linestyles=['--', '--'], clf=True)
+    plot(plt.bar, df_chart, ['macd_histo_norm'], ['g'], bar_size=.04 * freq / len(df_chart), fig_size=(15,3), clf=False)
     plt.savefig('static/macd_histo.png')
     
     return "Done."
