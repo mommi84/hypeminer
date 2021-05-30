@@ -36,7 +36,7 @@ STRATEGY_PLANNING = {
     'MACDHistoPeaks': {
         'init': macdhistopeaks.initialise,
         'daily': do_nothing,
-        'hourly': do_nothing,
+        'hourly': macdhistopeaks.optimise,
         'periodically': macdhistopeaks.act,
         'after_buying': do_nothing,
         'after_selling': macdhistopeaks.optimise,
