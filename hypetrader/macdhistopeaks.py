@@ -124,11 +124,7 @@ def _single_run(symbol, start, freq, days, macd_thr, verbose=True):
     return df, stats
 
 
-def optimise(state, simulation_days=1):
-
-    if state.invested:
-        print("Optimisation skipped.")
-        return None, None
+def optimise(state, simulation_days=0.5):
 
     print("Starting optimisation...")
     simulation_start = _get_now_minus_days(freq=state.freq, days=simulation_days)
