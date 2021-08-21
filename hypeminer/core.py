@@ -2,6 +2,7 @@
 from hypeminer import TweetStreamer, CurrencyFetcher, RobertaSentimentAnalysis, SentimentIndex, MultivariateTSF, utilities
 
 import os.path
+import json
 
 
 SAMPLES_STORE = 'data/{}/samples/{}.tsv'
@@ -66,9 +67,10 @@ class Hypeminer(object):
                     index_val["neutral"], index_val["negative"], index_val["score"]))
 
         # forecast values
-        self.multivar.run(self.store_id, utilities.to_safe_timestamp(timestamp))
+        predictions = self.multivar.run(self.store_id, utilities.to_safe_timestamp(timestamp))
 
-        # TODO return forecast
+        # return forecast
+        return predictions
 
 
     def single_run_from_stream(self, n_tweets):
@@ -83,14 +85,19 @@ class Hypeminer(object):
         print("Tweets from file {}.".format(filename))
         self.pipeline(tweets, timestamp)
 
+    def get_last_json(self):
+        with open(f"data/{self.currency}/last.json") as f:
+            last_json = json.load(f)
+        return last_json
+
 
 if __name__ == '__main__':
     h = Hypeminer("store", currency="BTCBUSD")
 
-    h.single_run_from_dump("20210318172600")
+    # h.single_run_from_dump("20210318172600")
 
     # h.single_run_from_stream(n_tweets=10)
 
-    # for i, file_id in enumerate(h.streamer.list_file_ids()):
-    #     print("\n=============================", i, file_id, "=============================")
-    #     h.single_run_from_dump(file_id)
+    for i, file_id in enumerate(h.streamer.list_file_ids()):
+        print("\n=============================", i, file_id, "=============================")
+        h.single_run_from_dump(file_id)

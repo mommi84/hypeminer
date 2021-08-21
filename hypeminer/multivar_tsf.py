@@ -176,6 +176,7 @@ class MultivariateTSF(object):
                 f_out.write("{}\t{}\t{}\t{}\n".format(timestamp, elem_forecast['price'], elem_forecast['priceDelta'], r_string))
 
         predictions = { "forecast": arr_forecast }
+        utilities.save_to_json(f"data/{self.currency}/last.json", predictions)
         return predictions
 
 
