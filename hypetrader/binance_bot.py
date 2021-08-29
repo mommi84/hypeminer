@@ -97,10 +97,47 @@ class BinanceBot(object):
 
         return order
 
+    def sell_stop_limit(self, stop, limit, perc=100):
+
+        if self.fiat == 'BUSD':
+            stop = round(stop, 1)
+            limit = round(limit, 1)
+        else:
+            print(f"Please check decimals for {self.fiat}.")
+
+        available_balance = self.free_balance(self.crypto, fees=True)
+        print(f"{self.crypto} available: {available_balance}")
+
+        balance_to_sell = available_balance * perc / 100
+        print(f"{self.crypto} to trade: {balance_to_sell}")
+
+        precision = int(round(- math.log(self.step_size, 10), 0))
+        qty = math.floor(balance_to_sell * 10 ** precision) / 10 ** precision
+        print(f"{self.crypto} to sell: {qty}")
+
+        order = self.client.order_oco_sell(
+            symbol=self.symbol,
+            quantity=qty,
+            price=limit,
+            stopPrice=stop,
+            stopLimitPrice=stop,
+            stopLimitTimeInForce='GTC'
+        )
+
+        return order
+
+
 
 if __name__ == '__main__':
-    bot = BinanceBot('VET', 'BUSD')
-    # price = bot.get_ticker_price()
-    # print(f"{bot.crypto} price in {bot.fiat}: {price}")
+    bot = BinanceBot('BNB', 'BUSD')
+    price = bot.get_ticker_price()
+    print(f"{bot.crypto} price in {bot.fiat}: {price}")
+
     balance = bot.free_balance(bot.fiat, fees=True)
     print(f"Available {bot.fiat}: {balance}")
+
+    # buy_order = bot.buy(price, perc=1)
+    # print(buy_order)
+
+    # sell_order = bot.sell_stop_limit(price * 0.97, price * 1.02, perc=100)
+    # print(sell_order)
