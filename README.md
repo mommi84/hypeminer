@@ -1,17 +1,34 @@
-# Hypeminer
+# Hypeminer & Hypetrader
+
+## Hypetrader :: learning-based trading bot
+
+![Hypetrader Assets](https://github.com/mommi84/hypeminer/blob/main/img/20211017112814.png "Hypetrader Assets Dashboard")
+
+### Usage
+
+The current version of the trader (`ocotrader.py`) can be started with:
+
+```bash
+cd hypetrader
+./oco_start.sh
+```
+
+Please add a `config.ini` with API and secret keys.
+
+## Hypeminer :: sentiment analysis on tweets about Bitcoin
 
 ![Bitcoin](https://github.com/mommi84/hypeminer/blob/main/img/20210318172600.png "Bitcoin")
 
-## Usage
+### Usage
 
-### Install
+#### Install
 
 ```bash
 pip3 install -r requirements.txt
 cd hypeminer
 export PYTHONPATH=${PYTHONPATH}:`pwd`
 ```
-### Run
+#### Run
 
 Bash:
 
