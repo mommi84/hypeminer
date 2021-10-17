@@ -78,6 +78,7 @@ def load_file_ocotrader(file):
     df = pd.DataFrame(index=index)
     for field in ['open', 'high', 'low', 'close', 'volume', 'trades']:
         df[field] = [v[field] for v in data]
+    os.remove(file)
     return df
 
 def download_history_fast_ocotrader(symbol, start, freq=60, days=90):

@@ -126,6 +126,6 @@ class HypeTrader(object):
 
 if __name__ == "__main__":
 
-    trader = HypeTrader(crypto='BNB', fiat='BUSD', strategy='MACDHistoPeaks', freq=1, percent=1, invested=False)
+    trader = HypeTrader(crypto='BNB', fiat='BUSD', strategy='MACDHistoPeaks', freq=1, percent=100, invested=False)
 
     trader.run()

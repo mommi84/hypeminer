@@ -63,33 +63,42 @@ def main():
     while True:
 
         current_dt_local = datetime.now()
-
-        df = download_history_fast_ocotrader(symbol, (
-            datetime.now() - timedelta(minutes=200)).strftime('%Y%m%d%H%M%S'), freq=1, days=0.25)
+        try:
+            df = download_history_fast_ocotrader(symbol, (
+                datetime.now() - timedelta(minutes=200)).strftime('%Y%m%d%H%M%S'), freq=1, days=0.25)
+        except Exception as e:
+            print(e)
+            continue
 
         df_n = normalise(df, freq)
         df_n = df_n[['close', 'close_ema26_norm', 'close_ma200_norm']].dropna()
-        df_n['buy_signal'] = np.vectorize(is_good_signal)(df_n['close_ema26_norm'], df_n['close_ma200_norm'])
-
+        try:
+            df_n['buy_signal'] = np.vectorize(is_good_signal)(df_n['close_ema26_norm'], df_n['close_ma200_norm'])
+        except ValueError as e:
+            print(e)
+            continue
+        print("")
         print(df_n)
 
         if df_n.iloc[-1]['buy_signal']:
             print("Suggestion: BUY")
 
             try:
+                price = bot.get_ticker_price()
                 buy_order = bot.buy(price, perc=100)
                 print(buy_order)
 
                 sell_order = bot.sell_stop_limit(price * stop_loss, price * take_profit, perc=100)
                 print(sell_order)
-            except:
+            except Exception as e:
+                print(e)
                 print(f"An order might be already in place. Skipping this buy signal.")
 
         else:
             print("Suggestion: IDLE")
 
         # sleep until next iteration
-        dt = df.index[-1] + timedelta(minutes=freq) + timedelta(seconds=BINANCE_UPDATE_ALLOWANCE_SECONDS)
+        dt = df.index[-1] + timedelta(minutes=freq) + timedelta(seconds=59)
         print(f"Waiting until {dt.strftime('%Y-%m-%d %H:%M:%S')} local time...")
         sys.stdout.flush()
         pause.until(dt)
