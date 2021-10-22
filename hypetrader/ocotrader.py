@@ -85,7 +85,7 @@ def main():
 
             try:
                 price = bot.get_ticker_price()
-                buy_order = bot.buy(price, perc=100)
+                buy_order = bot.buy(price, perc=99)
                 print(buy_order)
 
                 sell_order = bot.sell_stop_limit(price * stop_loss, price * take_profit, perc=100)
