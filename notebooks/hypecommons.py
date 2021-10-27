@@ -72,7 +72,7 @@ def plot(plt_fun, df_plot, cols, colours=None, linestyles=None, title=None, bar_
         if bar_size:
             plt_fun(df_plot.index, df_plot[col], color=clr, label=col, width=bar_size)
         else:
-            plt_fun(df_plot.index, df_plot[col], color=clr, label=col, linestyle=lst)
+            plt_fun(df_plot.index, df_plot[col], color=clr, label=col, linestyle=lst, drawstyle='steps-pre')
     if baseline:
         try:
             for bl, bln in zip(baseline, baseline_names):
