@@ -84,6 +84,8 @@ def plot(plt_fun, df_plot, cols, colours=None, linestyles=None, title=None, bar_
         title = f""
     plt.title(title)
     plt.gcf().autofmt_xdate()
+    if show:
+        plt.show()
     
 def output_chart(df, symbol, freq, save=False, fig_size=(20, 8), show=True, start_data=None):
     df_plot = df.copy()
