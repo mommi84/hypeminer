@@ -2,7 +2,7 @@
 import os
 import json
 import pandas as pd
-from datetime import datetime
+from datetime import datetime, date, timedelta
 from IPython.display import display
 import requests
 import matplotlib.pyplot as plt
@@ -138,3 +138,24 @@ def download_history_fast(symbol, start, freq=60, days=90):
         json.dump(values, f_out)
     
     return load_file(file_dest)
+
+def download_history_sentiment(start_date, days):
+
+    # calculate days diff
+    date_now = datetime.now()
+
+    s_date = datetime.strptime(start_date, "%Y%m%d")
+    diff_days = abs(date_now - s_date).days
+    total_days = diff_days + days
+
+    e_date = s_date + timedelta(days)
+
+    url = 'https://api.alternative.me/fng/?limit={}&format=json&date_format=cn'.format(total_days)
+    response = requests.request("GET", url)
+    result = json.loads(response.text)
+
+    df_sentiment = pd.json_normalize(result, record_path=['data'])
+    # how do u filter with end
+    df_filter_out_before = df_sentiment[ (df_sentiment['timestamp'] >= s_date.strftime("%Y-%m-%d"))]
+    df_filter_out_after = df_filter_out_before[df_filter_out_before['timestamp'] <= e_date.strftime("%Y-%m-%d")]
+    return df_filter_out_after
