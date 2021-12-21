@@ -162,3 +162,17 @@ scripts/twitter/tweets
 ./scripts/newsapi/news.json
 cache.json
 nohup.out
+
+notebooks/*.png
+notebooks/*.csv
+notebooks/*.tsv
+notebooks/*.ini
+notebooks/*.pkl
+notebooks/*.json
+
+notebooks/hypecycle/
+notebooks/pickles/
+notebooks/pse/
+notebooks/subtitles/
+notebooks/tweet-counts/
+notebooks/tweets/

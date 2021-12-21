@@ -2,7 +2,7 @@
 import os
 import json
 import pandas as pd
-from datetime import datetime
+from datetime import datetime, timezone
 from IPython.display import display
 import requests
 import matplotlib.pyplot as plt
@@ -36,11 +36,11 @@ def to_datetime(timestamp):
 def load_file(file):
     with open(file) as f:
         data = json.load(f)
-    index = [datetime.strptime(v['timestamp'], '%Y-%m-%d %H:%M:%S') for v in data]
+    index = [to_readable(v['epoch']) for v in data]
     df = pd.DataFrame(index=index)
     for field in ['open', 'high', 'low', 'close', 'volume', 'trades']:
         df[field] = [v[field] for v in data]
-    return df
+    return df.set_index(pd.to_datetime(df.index))
 
 def display_whole(dframe):
     with pd.option_context('display.max_rows', None, 'display.max_columns', None):
@@ -55,15 +55,19 @@ def to_epoch(timestamp, milliseconds=True):
         return int(epoch)
     
 def to_readable(epoch):
-    return datetime.fromtimestamp(epoch/1000).strftime('%Y-%m-%d %H:%M:%S')
+    return datetime.fromtimestamp(epoch/1000).astimezone(timezone.utc).strftime('%Y-%m-%d %H:%M:%S')
 
-def plot(plt_fun, df_plot, cols, colours=None, linestyles=None, title=None, bar_size=None, baseline=None, baseline_names=None, is_date=True,
-        fig_size=(20, 8), clf=True, show=True):
+def ema(data, n):
+    alpha = 2 / (1 + n)
+    return data.ewm(alpha=alpha, adjust=False).mean()
+
+def plot(plt_fun, df_plot, cols, colours=None, linestyles=None, title=None, bar_size=None, baseline=None, baseline_names=None, is_date=True, fig_size=(20, 8), clf=True, show=True, date_format='wrap'):
     plt.rcParams["figure.figsize"] = fig_size
     if clf:
         plt.clf()
     if is_date:
-        plt.gca().xaxis.set_major_formatter(mdates.DateFormatter('%Y-%m-%d\n%H:%M'))
+        datef = {'wrap': '%Y-%m-%d\n%H:%M', 'oneline': '%Y-%m-%d %H:%M', 'time': '%H:%M'}[date_format]
+        plt.gca().xaxis.set_major_formatter(mdates.DateFormatter(datef))
     if not colours:
         colours = len(cols) * [None]
     if not linestyles:
@@ -72,7 +76,7 @@ def plot(plt_fun, df_plot, cols, colours=None, linestyles=None, title=None, bar_
         if bar_size:
             plt_fun(df_plot.index, df_plot[col], color=clr, label=col, width=bar_size)
         else:
-            plt_fun(df_plot.index, df_plot[col], color=clr, label=col, linestyle=lst, drawstyle='steps-pre')
+            plt_fun(df_plot.index, df_plot[col], color=clr, label=col, linestyle=lst)
     if baseline:
         try:
             for bl, bln in zip(baseline, baseline_names):
@@ -113,10 +117,10 @@ def fetch(symbol, epoch, interval="1m", limit=1):
     result = json.loads(response.text)
     return result
     
-def download_history_fast(symbol, start, freq=60, days=90):
+def download_history_fast(symbol, start, freq=60, days=90, cache=True, silent=False, folder='.'):
     millis_in_period = days * 24 * 60 * 60 * 1000
-    file_dest = f"{symbol}-{start}-{freq}-{days}.json"
-    if os.path.isfile(file_dest):
+    file_dest = f"{folder}/{symbol}-{start}-{freq}-{days}.json"
+    if cache and os.path.isfile(file_dest):
 #         print(f"File {file_dest} found.")
         return load_file(file_dest)
     epoch = to_epoch(start)
@@ -125,16 +129,21 @@ def download_history_fast(symbol, start, freq=60, days=90):
     values = []
     completed = False
     iters = ceil(millis_in_period / (freq * 60000) / 1000)
-    for i in trange(iters, desc=f"Downloading {symbol} history", ncols=100):
+    iterator = trange(iters, desc=f"Downloading {symbol} history", ncols=100, disable=silent)
+    for i in iterator:
         values_batch = fetch(symbol, epoch, interval=interval, limit=1000)
         for value in values_batch:
             obj = {"index": len(values), "epoch": value[0], "timestamp": to_readable(value[0]), "open": float(value[1]), 
                    "high": float(value[2]), "low": float(value[3]), "close": float(value[4]), "volume": float(value[5]), 
                    "trades": value[8]}
             values.append(obj)
-            if value[0] >= epoch_at_start + millis_in_period:
+            if value[0] >= epoch_at_start + millis_in_period or value[0] + freq * 60000 > datetime.now().timestamp() * 1000:
                 completed = True
+                iterator.update(iters)
                 break
+        if completed:
+            iterator.close()
+            break
         epoch = values[-1]["epoch"] + freq * 60000
     with open(file_dest, 'w') as f_out:
         json.dump(values, f_out)
