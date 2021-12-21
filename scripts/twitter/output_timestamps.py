@@ -29,8 +29,14 @@ def output_timestamps(a, b, filename, req_delta=None):
 # output_timestamps(a, b, filename)
 
 
-a = dt.datetime(2021,3,8,23,59,0)
-b = dt.datetime(2021,3,20,23,59,0)
-filename = 'timestamps-gap.txt'
+# a = dt.datetime(2021,3,8,23,59,0)
+# b = dt.datetime(2021,3,20,23,59,0)
+# filename = 'timestamps-gap.txt'
+
+# output_timestamps(a, b, filename, req_delta=161*60)
+
+a = dt.datetime(2021,3,18,17,26,0)
+b = dt.datetime(2021,4,17,11,30,0)
+filename = 'timestamps-gap2.txt'
 
 output_timestamps(a, b, filename, req_delta=161*60)
