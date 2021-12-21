@@ -8,12 +8,6 @@ import re
 # suppress tf and cuda messages
 os.environ['TF_CPP_MIN_LOG_LEVEL'] = '3'
 
-from transformers import AutoModelForSequenceClassification
-from transformers import TFAutoModelForSequenceClassification
-from transformers import AutoTokenizer
-
-from scipy.special import softmax
-
 
 # Tasks:
 # emoji, emotion, hate, irony, offensive, sentiment
@@ -31,6 +25,9 @@ class RobertaSentimentAnalysis(object):
         self.tokenizer, self.labels, self.model = self.prepare()
 
     def prepare(self):
+        from transformers import AutoModelForSequenceClassification
+        from transformers import TFAutoModelForSequenceClassification
+        from transformers import AutoTokenizer
         tokenizer = AutoTokenizer.from_pretrained(MODEL)
         # download label mapping
         labels = []
@@ -59,6 +56,7 @@ class RobertaSentimentAnalysis(object):
         return " ".join(new_text)
 
     def predict(self, text, show=False):
+        from scipy.special import softmax
         text = self.preprocess(text)
         encoded_input = self.tokenizer(text, return_tensors='pt')
         output = self.model(**encoded_input)

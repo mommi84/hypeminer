@@ -22,6 +22,7 @@ class Hypeminer(object):
         self.streamer = TweetStreamer(currency)
         self.fetcher = CurrencyFetcher(currency)
         self.rob = RobertaSentimentAnalysis()
+        self.rob.prepare()
         self.index = SentimentIndex(mov_avg_window=mov_avg_window)
         self.multivar = MultivariateTSF(currency, forecast_hours, target, regressors)
         self.prepare_stores()

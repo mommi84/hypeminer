@@ -71,7 +71,7 @@ class TweetStreamer(object):
 
 if __name__ == '__main__':
     streamer = TweetStreamer("BTCBUSD")
-    # tweets, outfile = streamer.stream_tweets(n_tweets=10)
-    tweets, outfile = streamer.tweets_from_dump("20210318021353")
+    tweets, timestamp, outfile = streamer.stream_tweets(n_tweets=10)
+    # tweets, timestamp, outfile = streamer.tweets_from_dump("20210514120000") #tweets-20210514120000.json
     print("Tweets from file {}.".format(outfile))
     print(tweets)

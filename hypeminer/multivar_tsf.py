@@ -1,6 +1,5 @@
 #!/usr/bin/env python
 import pandas as pd
-from fbprophet import Prophet
 from matplotlib import pyplot as plt
 import datetime
 from math import ceil
@@ -94,6 +93,7 @@ class MultivariateTSF(object):
         plt.rcParams["axes.prop_cycle"] = prop_cycle
 
     def run(self, store_id, safe_timestamp):
+        from fbprophet import Prophet
 
         model = Prophet(yearly_seasonality=self.yearly_seasonality, weekly_seasonality=True, daily_seasonality=True)
 
